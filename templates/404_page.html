@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        .keyword-highlight {
+            font-weight: bold;
+            color: #FF0000; /* Red color to make the keyword stand out */
+        }
+        .input-long-url {
+            padding: 10px;
+            font-size: 1em;
+            width: 50%;
+            margin-bottom: 20px;
+        }
+        .submit-btn {
+            padding: 10px 20px;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+    <h1>404 - Page Not Found</h1>
+    <p>The link you are looking for with the keyword  doesn't exist.</p>
+    <p>Would you like to create a new short URL for this keyword?</p>
+    <form action="/shorten" method="POST">
+        <input type="hidden" name="keyword" value="{{ keyword }}">
+        <input type="text" name="longUrl" class="input-long-url" placeholder="Enter the long URL">
+        <button type="submit" class="submit-btn">Generate Link</button>
+    </form>
+</body>
+</html>
