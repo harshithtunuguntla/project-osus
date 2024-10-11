@@ -65,6 +65,13 @@
             color: #8E44AD;
         }
 
+        /* Media Query to hide Documentation button on smaller screens */
+        @media (max-width: 768px) {
+            .header .btn.documentation {
+                display: none; /* Hide the documentation button */
+            }
+        }
+
         .main-content {
             display: flex;
             flex-direction: column;

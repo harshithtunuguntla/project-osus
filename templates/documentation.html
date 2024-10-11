@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project OSUS - Open Source URL Shortener</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        /* Header */
+        header {
+            background-color: #000000;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        /* Main Layout */
+        .main-layout {
+            display: flex;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 200px;
+            background-color: #fff;
+            border-right: 1px solid #e0e0e0;
+            padding: 5px;
+            margin-right: 10px;
+            position: sticky;
+            top: 20px;
+            flex-shrink: 0;
+        }
+
+        .sidebar h2 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #0060df;
+            font-weight: 600;
+        }
+
+        .sidebar ul li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Main Content */
+        .content {
+            flex-grow: 1;
+            background-color: white;
+            padding: 20px;
+        }
+
+        /* Section Container */
+        .section-container {
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+        }
+
+        /* Code Blocks */
+        pre.code-block {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            color: #333;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #000000;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>Project OSUS - Open Source URL Shortener</h1>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="main-layout">
+
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <h2>Getting Started</h2>
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#installation">Installation</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#contributing">Contributing</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+            </ul>
+        </nav>
+
+        <!-- Content -->
+        <main class="content">
+
+            <!-- Overview Section -->
+            <div class="section-container" id="overview">
+                <h2>Overview</h2>
+                <p>Welcome to <strong>Project OSUS</strong>, an open-source URL shortener built using Flask, Python, and MongoDB. This project is part of Hacktoberfest 2024, encouraging contributions from developers and non-developers alike. The goal is to provide a simple, easy-to-use URL shortening service while fostering collaboration in the open-source community.</p>
+                <p>With Project OSUS, you can shorten long URLs, track clicks, and much more. The platform is designed with flexibility in mind, allowing developers to contribute and extend its functionality.</p>
+            </div>
+
+            <!-- Installation Section -->
+            <div class="section-container" id="installation">
+                <h2>Installation</h2>
+                <p>To get started with Project OSUS, follow these steps:</p>
+                <ol>
+                    <li>Fork the repository on GitHub.</li>
+                    <li>Clone the repository using the command:</li>
+                    <pre class="code-block">git clone https://github.com/your-username/project-osus.git</pre>
+                    <li>Set up a virtual environment (optional but recommended):</li>
+                    <pre class="code-block">python -m venv venv</pre>
+                    <li>Activate the virtual environment:</li>
+                    <pre class="code-block">source venv/bin/activate</pre>
+                    <li>Install the required dependencies:</li>
+                    <pre class="code-block">pip install -r requirements.txt</pre>
+                    <li>Set up your MongoDB connection string in a `.env` file:</li>
+                    <pre class="code-block">MONGO_PATH='localhost'<br>MONGO_PORT=27017</pre>
+                    <li>Run the application:</li>
+                    <pre class="code-block">flask run</pre>
+                    <li>Access the application at:</li>
+                    <pre class="code-block">http://localhost:5000</pre>
+                </ol>
+            </div>
+
+            <!-- Features Section -->
+            <div class="section-container" id="features">
+                <h2>Features</h2>
+                <ul>
+                    <li>Shorten long URLs with ease.</li>
+                    <li>Automatic redirection to the original URL.</li>
+                    <li>Simple and intuitive user interface.</li>
+                </ul>
+            </div>
+
+            <!-- Contributing Section -->
+            <div class="section-container" id="contributing">
+                <h2>Contributing</h2>
+                <p>We welcome contributions from developers of all skill levels! Whether you're fixing bugs, adding new features, or improving documentation, all help is appreciated. To contribute:</p>
+                <ol>
+                    <li>Fork the repository on GitHub.</li>
+                    <li>Clone your forked repository:</li>
+                    <pre class="code-block">git clone https://github.com/your-username/project-osus.git</pre>
+                    <li>Create a new branch for your changes:</li>
+                    <pre class="code-block">git checkout -b feature-branch</pre>
+                    <li>Make your changes and commit them:</li>
+                    <pre class="code-block">git add .<br>git commit -m "Description of your changes"</pre>
+                    <li>Push your changes:</li>
+                    <pre class="code-block">git push origin feature-branch</pre>
+                    <li>Create a pull request on GitHub with a description of your changes.</li>
+                </ol>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="section-container" id="faq">
+                <h2>Frequently Asked Questions (FAQ)</h2>
+                <div class="faq-item">
+                    <h3>1. How do I report a bug?</h3>
+                    <p>To report a bug, open an issue in the GitHub repository, including details and steps to reproduce the problem.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>2. Can I suggest new features?</h3>
+                    <p>Absolutely! Open an issue on GitHub to discuss new feature ideas. We're always open to suggestions from the community.</p>
+                </div>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="section-container" id="contact">
+                <h2>Contact Us</h2>
+                <p>If you have any questions or need further assistance, feel free to reach out to us via the following platforms:</p>
+                <ul>
+                    <li>GitHub: <a href="https://github.com/harshithtunuguntla/project-osus">GitHub Repository</a></li>
+                </ul>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2024 Project OSUS. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
