@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ddd8d8;
+        }
+
+        .container {
+            text-align: center;
+            background: #fcf6f6;
+            padding: 60px;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #2d2b2b;
+        }
+
+        p {
+            font-size: 18px;
+            color: #575555;
+            margin: 20px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            text-decoration: none;
+            color: white;
+            background-color: #1ca44c;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #177f52;
+            
+        }
+    
+        @media (max-width: 600px) {
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            p {
+               font-size: 16px;
+            }
+
+           .btn {
+               font-size: 14px;
+               padding: 8px 16px;
+            }
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> Oops! Page Not Found</h1>
+        <p> 404 - The short URL you are trying to reach doesn't exist!</p>
+        <a href="https://project-osus.vercel.app/" class="btn">Go to HomePage</a>
+        <a href="https://project-osus.vercel.app/" class="btn">Create a New Short URL</a>
+    </div>
+    
+</body>
+</html>
