@@ -1,77 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>URL Shortener</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Lato:wght@400;700&display=swap"
+        rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
+        /* Existing CSS styles */
         body {
             font-family: 'Lato', sans-serif;
-            background-color: #f1f1f1;
-            color: #333;
+            background: url('https://img.pikbest.com/wp/202347/purple-background-image-rendering-of-a-3d-illustrated-with-black-and-shapes_9770212.jpg!bw700') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
 
-        .header, .footer {
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .header,
+        .footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 15px;
+            z-index: 10;
         }
 
         .header {
             background-color: #000;
-            color: #fff;
             font-family: 'Poppins', sans-serif;
         }
 
-        /* Logo Styles */
         .header .brand {
             font-size: 28px;
             font-weight: 700;
             letter-spacing: 1px;
-            color: #007BFF; /* Changed to blue */
+            color: #9B59B6;
         }
 
-        /* Button Styles */
         .header .btn {
             border-radius: 30px;
             padding: 10px 20px;
             margin-left: 10px;
             transition: all 0.3s ease-in-out;
-            background: linear-gradient(to right, #1E90FF, #007BFF); /* Blue Gradient */
+            background: linear-gradient(to right, #8E44AD, #9B59B6);
             color: #fff;
         }
+
         .header .btn:hover {
             background-color: blue;
-            color: #000000; /* Blue on hover */
+            color: #000000; /* Blue on hover *
+
+        /* Media Query to hide Documentation button on smaller screens */
+        @media (max-width: 768px) {
+            .header .btn.documentation {
+                display: none; /* Hide the documentation button */
+            }
+
         }
 
-        /* Main Content */
         .main-content {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             flex-grow: 1;
+            position: relative;
+            z-index: 10;
         }
 
         .url-box {
-            background-color: #fff;
+            background-color: #2C3E50;
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
             width: 100%;
             max-width: 500px;
+            opacity: 0;
+            transform: scale(0.8) rotate(3deg);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            animation: fadeInScale 0.5s forwards;
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) rotate(3deg);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(1.05) rotate(-3deg);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .url-box:hover {
+            transform: scale(1.03);
+            transition: transform 0.3s ease;
         }
 
         .url-box .btn {
-            background-color: #007BFF;
+            background-color: #9B59B6;
             color: #fff;
             font-weight: bold;
             border-radius: 30px;
@@ -81,10 +128,9 @@
         }
 
         .url-box .btn:hover {
-            background-color: #1E90FF;
+            background-color: #8E44AD;
         }
 
-        /* Footer Styles */
         .footer {
             background-color: #000;
             color: #fff;
@@ -95,30 +141,40 @@
         }
 
         .footer a {
-            color: #007BFF; /* Blue hyperlink */
+            color: #9B59B6;
             text-decoration: none;
             font-weight: bold;
         }
 
         .footer .heart {
-            color: #1E90FF; /* Light blue heart */
+            color: #8E44AD;
         }
 
-        /* Footer URL History */
         .footer-details {
             margin-top: 20px;
             text-align: center;
         }
+
+        /* Message style */
+        #copyMessage {
+            margin-top: 10px;
+            color: #9B59B6;
+            display: none;
+            /* Hidden by default */
+        }
     </style>
 </head>
+
 <body>
+
+    <div class="overlay"></div>
 
     <!-- Header Section -->
     <header class="header">
         <div class="brand">O S U S</div>
         <div>
             <a href="/knowmore" class="btn">Know More</a>
-            <a href="/documentation" class="btn">Documentation</a>
+            <a href="/documentation" class="btn documentation">Documentation</a>
         </div>
     </header>
 
@@ -138,6 +194,8 @@
                 <button type="submit" class="btn">Shorten</button>
             </form>
             <div class="mt-3" id="shortUrl"></div>
+            <button id="copyButton" class="btn" style="display: none;">Copy to Clipboard</button>
+            <div id="copyMessage">URL copied to clipboard!</div> <!-- Message element -->
         </div>
     </main>
 
@@ -146,8 +204,6 @@
         <div>
             <a href="https://example.com" target="_blank">Open Source Developed <span class="heart">❤</span></a>
         </div>
-
-        <!-- Placeholder for more details -->
         <div class="footer-details">
             <p>HacktoberFest 2024</p>
         </div>
@@ -156,9 +212,14 @@
     <script>
         document.getElementById('shortenForm').addEventListener('submit', async function (e) {
             e.preventDefault();
-            
+
             const longUrl = document.getElementById('longUrl').value;
             const keyword = document.getElementById('keyword').value;
+            const shortUrlContainer = document.getElementById('shortUrl');
+            const copyButton = document.getElementById('copyButton');
+            const copyMessage = document.getElementById('copyMessage');
+
+            shortUrlContainer.innerHTML = 'Shortening...';
 
             try {
                 const response = await fetch('/shorten', {
@@ -169,14 +230,36 @@
                     body: JSON.stringify({ longUrl, keyword })
                 });
 
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
                 const data = await response.json();
-                document.getElementById('shortUrl').innerHTML = `Shortened URL: <a href="${data.shortUrl}" target="_blank">${data.shortUrl}</a>`;
+                shortUrlContainer.innerHTML = `Shortened URL: <a href="${data.shortUrl}" target="_blank">${data.shortUrl}</a>`;
+                copyButton.style.display = 'block'; // Show the copy button
+
+                // Add click event for the copy button
+                copyButton.onclick = function () {
+                    const tempInput = document.createElement('input');
+                    tempInput.value = data.shortUrl;
+                    document.body.appendChild(tempInput);
+                    tempInput.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(tempInput);
+
+                    // Show the copy message
+                    copyMessage.style.display = 'block';
+                    setTimeout(() => {
+                        copyMessage.style.display = 'none'; // Hide after 2 seconds
+                    }, 2000);
+                };
             } catch (error) {
                 console.error('Error:', error);
-                document.getElementById('shortUrl').textContent = 'Failed to shorten the URL';
+                shortUrlContainer.textContent = 'Failed to shorten the URL. Please try again.';
+                copyButton.style.display = 'none'; // Hide copy button on error
             }
         });
     </script>
-
 </body>
+
 </html>
