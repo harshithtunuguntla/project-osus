@@ -86,6 +86,12 @@ def shortenAPI():
         print('Long URL Received: ' + str(longUrl))
         print('Keyword Received: '+str(keyword))
 
+        # Check if the URL contains a protocol, if not, prepend 'https://'
+        if not longUrl.startswith(('http://', 'https://')):
+            longUrl = 'https://' + longUrl
+            print('Updated Long URL with https://: ' + str(longUrl))
+
+        # If the keyword is not provided, generate a random one
         if keyword == '':
             keyword = generate_random_string()
             print('New keyword generated:' + str(keyword))
