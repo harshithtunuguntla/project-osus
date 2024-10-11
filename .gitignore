@@ -1,2 +1,3 @@
-venv/
+sekhar/
+__pycache__/
 .env
