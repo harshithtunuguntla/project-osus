@@ -4,8 +4,6 @@ from dotenv import load_dotenv
 import os
 import random
 import string
-from datetime import datetime, timedelta
-
 
 load_dotenv()
 
@@ -83,28 +81,24 @@ def shortenAPI():
     if request.method == 'POST':
         longUrl = request.json.get("longUrl")
         keyword = request.json.get("keyword")
-        expiration_date_time = request.json.get("expirationDateTime") # added expiry time
 
-        # Logs  
+        # Logs
         print('Long URL Received: ' + str(longUrl))
         print('Keyword Received: '+str(keyword))
 
         if keyword == '':
             keyword = generate_random_string()
             print('New keyword generated:' + str(keyword))
-
-
             
-        expiration_timestamp = None
-        if expiration_date_time:
-            expiration_timestamp = datetime.fromisoformat(expiration_date_time)  # Parse ISO format datetime
 
         if is_keyword_present(keyword) == 0:
+            print('Keyword is not present, inserting into DB')
             ShortUrlDatabase.insert_one(
-               {'keyword': keyword, 'url': longUrl, 'clicks': 0, 'expiryTime': expiration_timestamp})
+                {'keyword': keyword, 'url': longUrl, 'clicks': 0})
             print('DB insert successful')
         else:
-            return jsonify({'error': 'The Keyword Already Exists, Choose a Different One'}), 400
+            print('Keyword is present, throwing error')
+            return jsonify({'shortUrl': 'The Keyword Already Exists, Choose a Different One'})
 
     if request.method == 'GET':
         print('Called get method on shorten end-point, throwing error')
@@ -133,18 +127,11 @@ def hearBeat():
 @app.route('/<keyword>')
 def reroute(keyword):
     print('Clicked on shortURL')
-    if keyword == 'favicon.ico':
-        return ''
     link_status = 0
-    current_time = datetime.now()
-    print(current_time,"=====")
     print('Finding the URL Keyword')
     print('Mongo Connection: '+str(os.getenv('MONGO_PATH')[:6]))
     for item in ShortUrlDatabase.find():
         if (item['keyword'] == keyword):
-            expiry_time = item.get('expiryTime')
-            if expiry_time and current_time > expiry_time:
-                return render_template('expired.html', keyword=keyword)
             redirection = item['url']
             # Write Logs Here
             print('Short URL <> Long URL mapping found in DB')
