@@ -51,6 +51,9 @@ def home():
     print('Home Page API Called, rendering template')
     return render_template('index.html')
 
+@app.route('/documentation')
+def documentation():          
+    return render_template('documentation.html')
 
 @app.route('/getURL')
 def currentURl():
