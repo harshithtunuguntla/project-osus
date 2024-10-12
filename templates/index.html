@@ -215,10 +215,19 @@
   </footer>
 
   <script>
+    const longUrlInput = document.getElementById('longUrl');
+
+    longUrlInput.addEventListener('blur', function () {
+      let urlValue = longUrlInput.value.trim();
+      if (urlValue && !urlValue.startsWith('http://') && !urlValue.startsWith('https://')) {
+        longUrlInput.value = 'https://' + urlValue;
+      }
+    });
+
     document.getElementById('shortenForm').addEventListener('submit', async function (e) {
       e.preventDefault();
 
-      const longUrl = document.getElementById('longUrl').value;
+      const longUrl = longUrlInput.value;
       const keyword = document.getElementById('keyword').value;
       const shortUrlContainer = document.getElementById('shortUrl');
 
