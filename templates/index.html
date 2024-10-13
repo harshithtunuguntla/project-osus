@@ -201,6 +201,7 @@
         <div class="mb-3">
           <label for="keyword" class="form-label">Custom Keyword (optional)</label>
           <input type="text" class="form-control" id="keyword" placeholder="Enter custom keyword">
+          <p id="keywordError"></p>
         </div>
         <button type="submit" class="btn">Shorten</button>
       </form>
@@ -236,6 +237,22 @@
       shortUrlContainer.innerHTML = 'Shortening...';
 
       try {
+        // Check if keyword is valid
+        const pattern = /^[a-zA-Z0-9\-._~]+$/;
+        if (keyword !== '' && !pattern.test(keyword)) {
+          document.getElementById('keyword').focus();
+          const error = new Error('Invalid keyword');
+          const allowedChars = '[a-z] / [A-Z] / [0-9] / \"-\" / \"_\" / \"~\" / \".\"';
+
+          // Display error message below the input
+          document.getElementById('keywordError').innerHTML = error.message + "<br>" + `Allowed characters: ${allowedChars}`;
+
+          throw error;
+        } else {
+          // Clear error message below the input
+          document.getElementById('keywordError').innerHTML = '';
+        }
+
         const response = await fetch('/shorten', {
           method: 'POST',
           headers: {
