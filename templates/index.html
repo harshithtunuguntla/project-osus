@@ -179,6 +179,10 @@
       color: red;
       font-weight: bold;
     }
+
+    #keywordLengthIndicator {
+      float: right;
+    }
   </style>
 </head>
 
@@ -295,7 +299,7 @@
           throw new Error(data.error || 'Failed to shorten URL');
       }
         shortUrlContainer.innerHTML = `
-                    Shortened URL: <a href="${data.shortUrl}" class="short-url" target="_blank">${data.shortUrl}</a>
+                    <span style="color: white;">Shortened URL:</span> <a href="${data.shortUrl}" class="short-url" target="_blank">${data.shortUrl}</a>
                     <i class="fas fa-copy copy-icon" title="Copy to clipboard"></i>
                 `;
 
