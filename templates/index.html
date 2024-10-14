@@ -176,6 +176,11 @@
     #keywordLengthIndicator {
       float: right;
     }
+
+    .error-message {
+      color: red;
+      font-weight: bold;
+    }
   </style>
 </head>
 
@@ -283,11 +288,11 @@
           body: JSON.stringify({ longUrl, keyword })
         });
 
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
         const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to shorten URL');
+      }
         shortUrlContainer.innerHTML = `
                     Shortened URL: <a href="${data.shortUrl}" class="short-url" target="_blank">${data.shortUrl}</a>
                     <i class="fas fa-copy copy-icon" title="Copy to clipboard"></i>
@@ -315,8 +320,9 @@
         };
       } catch (error) {
         console.error('Error:', error);
-        shortUrlContainer.innerHTML = 'Failed to shorten URL. Please try again.';
-      }
+        shortUrlContainer.innerHTML = `Error: ${error.message}`;
+        shortUrlContainer.classList.add('error-message');
+    }
     });
   </script>
 
