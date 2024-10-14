@@ -174,6 +174,7 @@
       word-wrap: break-word;  
   overflow-wrap: break-word;
     }
+
     .error-message {
       color: red;
       font-weight: bold;
@@ -206,8 +207,10 @@
           <input type="url" class="form-control" id="longUrl" placeholder="https://example.com" required>
         </div>
         <div class="mb-3">
+          <span id="keywordLengthIndicator"></span>
           <label for="keyword" class="form-label">Custom Keyword (optional)</label>
-          <input type="text" class="form-control" id="keyword" placeholder="Enter custom keyword">
+          <input type="text" class="form-control" id="keyword" placeholder="Enter custom keyword">          
+          <p id="keywordError"></p>
         </div>
         <button type="submit" class="btn">Shorten</button>
       </form>
@@ -233,6 +236,24 @@
   </footer>
 
   <script>
+    // Define the maximum length of the keyword
+    const maxKeywordLength = 50
+
+    // Set the maximum length attribute for the keyword input
+    const keywordInput = document.getElementById('keyword')
+    keywordInput.setAttribute('maxlength', maxKeywordLength)
+    
+    // Set the initial length indicator  
+    const keywordLengthIndicator = document.getElementById('keywordLengthIndicator');
+    keywordLengthIndicator.innerHTML = `${keywordInput.value.length}/${maxKeywordLength}`
+
+    // Add event listener to the keyword input
+    keywordInput.addEventListener('input', function (e) {
+      const maxLength = parseInt(e.target.getAttribute('maxlength'));
+      const currentLength = e.target.value.length;
+      keywordLengthIndicator.innerHTML = `${currentLength}/${maxLength}`
+    })
+
     document.getElementById('shortenForm').addEventListener('submit', async function (e) {
       e.preventDefault();
 
@@ -243,6 +264,22 @@
       shortUrlContainer.innerHTML = 'Shortening...';
 
       try {
+        // Check if keyword is valid
+        const pattern = /^[a-zA-Z0-9\-._~]+$/;
+        if (keyword !== '' && !pattern.test(keyword)) {
+          document.getElementById('keyword').focus();
+          const error = new Error('Invalid keyword');
+          const allowedChars = '[a-z] / [A-Z] / [0-9] / \"-\" / \"_\" / \"~\" / \".\"';
+
+          // Display error message below the input
+          document.getElementById('keywordError').innerHTML = error.message + "<br>" + `Allowed characters: ${allowedChars}`;
+
+          throw error;
+        } else {
+          // Clear error message below the input
+          document.getElementById('keywordError').innerHTML = '';
+        }
+
         const response = await fetch('/shorten', {
           method: 'POST',
           headers: {
