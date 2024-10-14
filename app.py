@@ -98,7 +98,7 @@ def shortenAPI():
             print('DB insert successful')
         else:
             print('Keyword is present, throwing error')
-            return jsonify({'shortUrl': 'The Keyword Already Exists, Choose a Different One'})
+            return jsonify({'error': 'The keyword already exists. Please choose a different one.'}), 400
 
     if request.method == 'GET':
         print('Called get method on shorten end-point, throwing error')
