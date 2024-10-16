@@ -8,8 +8,11 @@ import string
 load_dotenv()
 
 app = Flask(__name__)
+# Use the connection string from the .env file
 client = MongoClient(os.getenv('MONGO_PATH'), int(os.getenv('MONGO_PORT')))
-
+#For Mongo atlas 
+#mongo_uri = os.getenv('MONGO_URI')
+#client = MongoClient(mongo_uri)
 # MongoDB Database Access
 database = client.ShortUrlDatabase
 ShortUrlDatabase = database.URLData
@@ -71,10 +74,6 @@ def shortenAPI():
     '''
     This method will shorten the link and give the short URL
     '''
-    # Logic
-    # This end point should check if that URL is already present in the DB or not
-    # This end point should take only POST calls and return the shortened version of the URL
-    # do: Handle Get cases
     print('URL Shorten Called')
     print('Mongo Connection: '+str(os.getenv('MONGO_PATH')[:6]))
     
@@ -84,36 +83,66 @@ def shortenAPI():
 
         # Logs
         print('Long URL Received: ' + str(longUrl))
-        print('Keyword Received: '+str(keyword))
+        print('Keyword Received: ' + str(keyword))
 
         if keyword == '':
             keyword = generate_random_string()
-            print('New keyword generated:' + str(keyword))
-            
+            print('New keyword generated: ' + str(keyword))
+        
+        # Prepare the data to insert
+        url_data = {
+            'keyword': keyword,
+            'url': longUrl,
+            'clicks': 0
+        }
 
+        # Check if the keyword is already present
         if is_keyword_present(keyword) == 0:
             print('Keyword is not present, inserting into DB')
-            ShortUrlDatabase.insert_one(
-                {'keyword': keyword, 'url': longUrl, 'clicks': 0})
+            print('Data to be inserted:', url_data)  # Print the data being inserted
+            ShortUrlDatabase.insert_one(url_data)
             print('DB insert successful')
         else:
             print('Keyword is present, throwing error')
-            return jsonify({'shortUrl': 'The Keyword Already Exists, Choose a Different One'})
+            return jsonify({'error': 'The keyword already exists. Please choose a different one.'}), 400
 
     if request.method == 'GET':
         print('Called get method on shorten end-point, throwing error')
         return "GET Method Not Allowed On This End Point"
 
-    return jsonify({'shortUrl': str(request.host_url)+str(keyword)})
+    return jsonify({'shortUrl': str(request.host_url) + str(keyword)})
 
 
 @app.route('/analytics', methods=['GET', 'POST'])
 def analyticsAPI():
-    # No Authentication to check the analytics of the URL as of now
     '''
-    This end point will take URL and will provide the analytics for that URL, since we don\'t have authentication we\'ll be asking just for the keyword and we\'ll give the analytics for the URL as of now '''
-    print('Analytics API Called')
-    return 'Under Development'
+This /analytics route consists of both GET and POST requests.
+- GET: Returns the analytics.html file.
+- POST: Returns the total number of clicks (visits) for the specific shortened URL from the DB.
+'''
+
+    if request.method == 'GET':
+        # Serve the analytics.html template for GET requests
+        print('Analytics page requested.')
+        return render_template('analytics.html')
+
+    if request.method == 'POST':
+        keyword = request.json.get("keyword")
+        print('Keyword Received: ' + str(keyword))
+
+        # Check if the keyword exists in the database
+        url_data = ShortUrlDatabase.find_one({'keyword': keyword})
+
+        if url_data:
+            # Return the current clicks count without incrementing
+            clicks_count = url_data['clicks']
+            print(f'Keyword: {keyword}, Clicks Count: {clicks_count}')
+            return jsonify({'clicks': clicks_count}), 200
+        else:
+            print('Keyword not found in DB')
+            return jsonify({'error': 'Keyword not found.'}), 404
+
+
 
 
 @app.route('/heartbeat')
@@ -128,18 +157,28 @@ def hearBeat():
 def reroute(keyword):
     print('Clicked on shortURL')
     link_status = 0
+    redirection = None  # Initialize redirection variable
     print('Finding the URL Keyword')
-    print('Mongo Connection: '+str(os.getenv('MONGO_PATH')[:6]))
+    print('Mongo Connection: ' + str(os.getenv('MONGO_PATH')[:6]))
+    
+    # Find the URL associated with the keyword
     for item in ShortUrlDatabase.find():
-        if (item['keyword'] == keyword):
+        if item['keyword'] == keyword:
             redirection = item['url']
-            # Write Logs Here
+            # Increment the clicks count
+            ShortUrlDatabase.update_one(
+                {'keyword': keyword}, 
+                {'$inc': {'clicks': 1}}  # Increment clicks by 1
+            )
             print('Short URL <> Long URL mapping found in DB')
             link_status = 1
-    if (link_status == 0):
+            break  # Break out of the loop once the keyword is found
+
+    if link_status == 0:
         print('Link Not Found in DB')
         return "Link Not Found"
-    print('Redirecting to long url: '+str(redirection))
+    
+    print('Redirecting to long URL: ' + str(redirection))
     return redirect(redirection, code=302)
 
 
