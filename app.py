@@ -9,10 +9,10 @@ load_dotenv()
 
 app = Flask(__name__)
 # Use the connection string from the .env file
-#client = MongoClient(os.getenv('MONGO_PATH'), int(os.getenv('MONGO_PORT')))
+client = MongoClient(os.getenv('MONGO_PATH'), int(os.getenv('MONGO_PORT')))
 #For Mongo atlas 
-mongo_uri = os.getenv('MONGO_PATH')
-client = MongoClient(mongo_uri)
+#mongo_uri = os.getenv('MONGO_PATH')
+#client = MongoClient(mongo_uri)
 # MongoDB Database Access
 database = client.ShortUrlDatabase
 ShortUrlDatabase = database.URLData
