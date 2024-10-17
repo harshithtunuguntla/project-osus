@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Lato:wght@400;700&display=swap"
+    rel="stylesheet">
     <title>404 - Page Not Found</title>
     <style>
+
+
         *{
             margin: 0;
             padding: 0;
@@ -12,12 +17,12 @@
         }
 
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Lato', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #ddd8d8;
+            background-color: #ddd8d8ba;
         }
 
         .container {
@@ -46,15 +51,17 @@
             font-size: 16px;
             text-decoration: none;
             color: white;
-            background-color: #1ca44c;
+            background-color: #9B59B6;
             border-radius: 5px;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.5 ease;
         }
 
         .btn:hover {
-            background-color: #177f52;
-            
-        }
+    background-color: #722e8f;
+    color: #ffffff;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
     
         @media (max-width: 600px) {
             .container {
@@ -71,7 +78,7 @@
             }
 
            .btn {
-               font-size: 14px;
+               font-size: 20px;
                padding: 8px 16px;
             }
         }
@@ -80,12 +87,14 @@
     </style>
 </head>
 <body>
+    
     <div class="container">
         <h1> Oops! Page Not Found</h1>
-        <p> 404 - The short URL you are trying to reach doesn't exist!</p>
-        <a href="https://project-osus.vercel.app/" class="btn">Go to HomePage</a>
-        <a href="https://project-osus.vercel.app/" class="btn">Create a New Short URL</a>
+        <p> 404 - The URL you are trying to reach doesn't exist!</p>
+        <a href="/" class="btn"><i class="fa-regular fa-link"></i> Create a New Short URL</a>
     </div>
+
     
 </body>
+
 </html>
