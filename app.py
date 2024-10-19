@@ -11,7 +11,7 @@ app = Flask(__name__)
 # Use the connection string from the .env file
 client = MongoClient(os.getenv('MONGO_PATH'), int(os.getenv('MONGO_PORT')))
 #For Mongo atlas 
-#mongo_uri = os.getenv('MONGO_URI')
+#mongo_uri = os.getenv('MONGO_PATH')
 #client = MongoClient(mongo_uri)
 # MongoDB Database Access
 database = client.ShortUrlDatabase
@@ -176,7 +176,7 @@ def reroute(keyword):
 
     if link_status == 0:
         print('Link Not Found in DB')
-        return "Link Not Found"
+        return render_template('errorpage.html')
     
     print('Redirecting to long URL: ' + str(redirection))
     return redirect(redirection, code=302)
