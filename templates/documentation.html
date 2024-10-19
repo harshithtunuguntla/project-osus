@@ -228,20 +228,80 @@
           </p>
         </div>
 
-        <!-- Installation Section -->
-        <div class="section-container" id="installation">
-          <h2>Installation</h2>
-          <p>To get started with Project OSUS, follow these steps:</p>
-          <ol>
-            <li>Fork the repository on GitHub.</li>
-            <li>Clone the repository using the command:</li>
-            <pre class="code-block">
-git clone https://github.com/your-username/project-osus.git</pre
-            >
-            <li>Set up a virtual environment (optional but recommended):</li>
-            <pre class="code-block">python -m venv venv</pre>
-          </ol>
-        </div>
+            <!-- Installation Section -->
+            <div class="section-container" id="installation">
+                <h2>Installation</h2>
+                <p>To get started with Project OSUS, follow these steps:</p>
+                <ol>
+                    <li>Fork the repository on GitHub.</li>
+                    <li>Clone the repository using the command:</li>
+                    <pre class="code-block">git clone https://github.com/your-username/project-osus.git</pre>
+                    <li>Set up a virtual environment (optional but recommended):</li>
+                    <pre class="code-block">python -m venv venv</pre>
+                    <li>Activate the virtual environment:</li>
+                    <pre class="code-block">source venv/bin/activate</pre>
+                    <li>Install the required dependencies:</li>
+                    <pre class="code-block">pip install -r requirements.txt</pre>
+                    <li>Set up your MongoDB connection string in a `.env` file:</li>
+                    <pre class="code-block">MONGO_PATH='localhost'<br>MONGO_PORT=27017</pre>
+                    <li>Run the application:</li>
+                    <pre class="code-block">flask run</pre>
+                    <li>Access the application at:</li>
+                    <pre class="code-block">http://localhost:5000</pre>
+                </ol>
+            </div>
+
+            <!-- Features Section -->
+            <div class="section-container" id="features">
+                <h2>Features</h2>
+                <ul>
+                    <li>Shorten long URLs with ease.</li>
+                    <li>Automatic redirection to the original URL.</li>
+                    <li>Simple and intuitive user interface.</li>
+                </ul>
+            </div>
+
+            <!-- Contributing Section -->
+            <div class="section-container" id="contributing">
+                <h2>Contributing</h2>
+                <p>We welcome contributions from developers of all skill levels! Whether you're fixing bugs, adding new features, or improving documentation, all help is appreciated. To contribute:</p>
+                <ol>
+                    <li>Fork the repository on GitHub.</li>
+                    <li>Clone your forked repository:</li>
+                    <pre class="code-block">git clone https://github.com/your-username/project-osus.git</pre>
+                    <li>Create a new branch for your changes:</li>
+                    <pre class="code-block">git checkout -b feature-branch</pre>
+                    <li>Make your changes and commit them:</li>
+                    <pre class="code-block">git add .<br>git commit -m "Description of your changes"</pre>
+                    <li>Push your changes:</li>
+                    <pre class="code-block">git push origin feature-branch</pre>
+                    <li>Create a pull request on GitHub with a description of your changes.</li>
+                </ol>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="section-container" id="faq">
+                <h2>Frequently Asked Questions (FAQ)</h2>
+                <div class="faq-item">
+                    <h3>1. How do I report a bug?</h3>
+                    <p>To report a bug, open an issue in the GitHub repository, including details and steps to reproduce the problem.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>2. Can I suggest new features?</h3>
+                    <p>Absolutely! Open an issue on GitHub to discuss new feature ideas. We're always open to suggestions from the community.</p>
+                </div>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="section-container" id="contact">
+                <h2>Contact Us</h2>
+                <p>If you have any questions or need further assistance, feel free to reach out to us via the following platforms:</p>
+                <ul>
+                    <li>GitHub: <a href="https://github.com/harshithtunuguntla/project-osus">GitHub Repository</a></li>
+                </ul>
+            </div>
+
+        </main>
     
       </main>
     </div>
