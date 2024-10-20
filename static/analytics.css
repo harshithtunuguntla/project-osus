@@ -52,6 +52,12 @@ body {
     color: #8E44AD;
   }
 
+  .header ul {
+    display: flex;
+    list-style: none;
+    
+  }
+
   
 
   .main-content {
