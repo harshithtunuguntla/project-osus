@@ -1,0 +1,253 @@
+body {
+    font-family: 'Lato', sans-serif;
+    background: url('https://img.pikbest.com/wp/202347/purple-background-image-rendering-of-a-3d-illustrated-with-black-and-shapes_9770212.jpg!bw700') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+  }
+
+  .header,
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    z-index: 10;
+  }
+
+  .header {
+    background-color: #000;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .header .brand {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #9B59B6;
+  }
+
+  .header .btn {
+    border-radius: 30px;
+    padding: 10px 20px;
+    margin-left: 10px;
+    transition: all 0.3s ease-in-out;
+    background: linear-gradient(to right, #8E44AD, #9B59B6);
+    color: #fff;
+  }
+
+  .header .btn:hover {
+    background: linear-gradient(to right, #f9e9ff, #f7e3ff);
+    color: #8E44AD;
+  }
+
+  
+
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    position: relative;
+    z-index: 10;
+  }
+
+  .url-box {
+    background-color: #2C3E50;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    max-width: 500px;
+    opacity: 0;
+    transform: scale(0.8) rotate(3deg);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    animation: fadeInScale 0.5s forwards;
+  }
+
+  @keyframes fadeInScale {
+    0% {
+      opacity: 0;
+      transform: scale(0.8) rotate(3deg);
+    }
+
+    50% {
+      opacity: 0.5;
+      transform: scale(1.05) rotate(-3deg);
+    }
+
+    100% {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
+  }
+
+  .url-box:hover {
+    transform: scale(1.03);
+    transition: transform 0.3s ease;
+  }
+
+  .url-box .btn {
+    background-color: #9B59B6;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 30px;
+    padding: 10px 20px;
+    width: 100%;
+    transition: background-color 0.3s ease-in-out;
+  }
+
+  .url-box .btn:hover {
+    background-color: #8E44AD;
+  }
+
+  .footer {
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    padding: 40px;
+    flex-shrink: 0;
+    flex-direction: column;
+  }
+
+  .footer a {
+    color: #9B59B6;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .footer .heart {
+    color: #8E44AD;
+  }
+
+  .footer-details {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .copy-icon {
+    cursor: pointer;
+    color: #9B59B6;
+    margin-left: 10px;
+    transition: color 0.3s;
+    font-size: 1.2em;
+  }
+
+  .url-highlight {
+    background-color: #9B59B6;
+    color: white;
+    padding: 2px 4px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  .short-url{
+    word-wrap: break-word;  
+overflow-wrap: break-word;
+  }
+
+  .error-message {
+    color: red;
+    font-weight: bold;
+  }
+
+  #keywordLengthIndicator {
+    float: right;
+  }
+
+  .checkbtn {
+    font-size: 30px;
+    color: white;
+    float: right;
+    line-height: 80px;
+    margin-right: 40px;
+    cursor: pointer;
+    display: none;
+  }
+  #check {
+    display: none;
+  }
+
+
+  /***** MEDIA QUERY *****/
+
+@media(max-width : 600px) {
+    .main-content {
+        height: calc(100vh - 30vh) !important;
+        width: 100% !important;
+        z-index: 0;
+      }
+
+  .header {
+    padding: 5px 10px;
+    z-index: 10;
+    height: 13vh;
+    width: 100%;
+  }
+  
+  .header ul {
+    display: flex;
+    flex-direction: column; 
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    background-color: black;
+    top: 80px;
+    left: -100%;
+    text-align: center;
+    transition: all .5s;
+    gap : 6px;
+    padding-top: 20px;
+    padding-left: 0;
+  }
+  .header ul li {
+    margin: 5px 0px;
+  }
+
+  .header .brand span {
+    display: none;
+  }
+
+  .checkbtn {
+    display: block;
+    margin-top: -5px;
+    margin-right: 20px;
+  }
+  #check:checked ~ ul {
+    left: 0;
+  }
+
+  .url-box {
+    width: 90%;
+  }
+
+
+  .footer {
+    padding-top: 10px;
+    z-index: 10;
+    height: 17vh;
+    justify-content: space-around;
+  }
+  .footer-details {
+    margin: 0;
+  }
+
+
+}
+
+@media (max-width: 768px) {
+    .header .brand{
+        font-size: 20px;
+    }
+  }
