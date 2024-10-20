@@ -122,7 +122,7 @@ body {
     background-color: #000;
     color: #fff;
     text-align: center;
-    padding: 40px;
+    padding: 30px;
     flex-shrink: 0;
     flex-direction: column;
   }
@@ -253,8 +253,21 @@ overflow-wrap: break-word;
 
 @media (max-width: 768px) {
     .header .brand{
-        font-size: 20px;
+      font-size: 20px;
     }
+
+    .header ul li a {
+      font-size: 14px;
+    }
+
+  
+    .footer-details {
+      margin: 8;
+    }
+    .footer-details p {
+      margin-bottom: 0;
+    }
+    
   }
 
  /***** End MEDIA QUERY *****/
