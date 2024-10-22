@@ -103,7 +103,7 @@ def redirect_to_long_url(keyword):
     url_data = get_long_url_by_keyword(keyword)
     
     if not url_data:
-        return "Link Not Found", 404
+        return render_template('errorpage.html')
     
     update_click_count(keyword)
     return redirect(url_data['url'], code=302)

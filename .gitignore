@@ -3,3 +3,4 @@ venv/
 _pycache_/
 __pycache__/
 .vercel
+.venv/
