@@ -8,179 +8,105 @@ import string
 load_dotenv()
 
 app = Flask(__name__)
-# Use the connection string from the .env file
+
+# MongoDB Setup
 client = MongoClient(os.getenv('MONGO_PATH'), int(os.getenv('MONGO_PORT')))
-#For Mongo atlas 
-#mongo_uri = os.getenv('MONGO_PATH')
-#client = MongoClient(mongo_uri)
-# MongoDB Database Access
-database = client.ShortUrlDatabase
-ShortUrlDatabase = database.URLData
+db = client.ShortUrlDatabase
+url_collection = db.URLData
 
-
-# Functions
+# Helper Functions
 def generate_random_string(length=5):
-    '''
-    This function gives a combination of lowercase and uppercase letters of k length
-    '''
-    print('generating a random keyword')
-    letters = string.ascii_letters
-    random_string = ''.join(random.choices(letters, k=length))
-    print('keyword generated: '+str(random_string))
-    return random_string
+    """Generate a random string of specified length with both uppercase and lowercase letters."""
+    return ''.join(random.choices(string.ascii_letters, k=length))
 
+def check_keyword_existence(keyword):
+    """Check if the given keyword already exists in the database."""
+    return url_collection.find_one({'keyword': keyword}) is not None
 
-def is_keyword_present(keyword):
-    '''
-    Function to check if the current keyword is present in the DB or not
-    '''
-    print('Fetching if keyword is present in DB: '+str(keyword))
-    present = 0
-    for item in ShortUrlDatabase.find():
-        if (item['keyword'] == keyword):
-            print('keyword present in DB: '+str(keyword))
-            present = 1
-    print('keyword not present in DB: '+str(keyword))
-    return present
+def insert_url_data(keyword, long_url):
+    """Insert the long URL and keyword into the database."""
+    url_collection.insert_one({
+        'keyword': keyword,
+        'url': long_url,
+        'clicks': 0
+    })
+
+def get_long_url_by_keyword(keyword):
+    """Retrieve the long URL associated with the given keyword."""
+    return url_collection.find_one({'keyword': keyword})
+
+def update_click_count(keyword):
+    """Increment the click count for the given keyword."""
+    url_collection.update_one({'keyword': keyword}, {'$inc': {'clicks': 1}})
 
 # Routes
-
-
 @app.route('/')
 def home():
-    '''
-    Index page for URL Shortener (Project OSUS (Open Source URL Shortener))
-    '''
-    print('Home Page API Called, rendering template')
+    """Render the index page."""
     return render_template('index.html')
 
 @app.route('/documentation')
-def documentation():          
+def documentation():
+    """Render the documentation page."""
     return render_template('documentation.html')
 
 @app.route('/getURL')
-def currentURl():
-    '''
-    This function will return the current working URL, something like 'http://127.0.0.1:5000/'
-    '''
-    print('getURL API Called')
-    current_url = request.host_url
-    print('Current URL: '+str(current_url))
-    return f'The app is running on {current_url}'
-
+def current_url():
+    """Return the current working URL of the application."""
+    return f'The app is running on {request.host_url}'
 
 @app.route('/shorten', methods=['POST'])
-def shortenAPI():
-    '''
-    This method will shorten the link and give the short URL
-    '''
-    print('URL Shorten Called')
-    print('Mongo Connection: '+str(os.getenv('MONGO_PATH')[:6]))
-    
+def shorten_url():
+    """Shorten the given long URL and return a short URL."""
     if request.method == 'POST':
-        longUrl = request.json.get("longUrl")
-        keyword = request.json.get("keyword")
+        long_url = request.json.get("longUrl")
+        keyword = request.json.get("keyword", '')
 
-        # Logs
-        print('Long URL Received: ' + str(longUrl))
-        print('Keyword Received: ' + str(keyword))
-
-        if keyword == '':
-            keyword = generate_random_string()
-            print('New keyword generated: ' + str(keyword))
+        if not long_url:
+            return jsonify({'error': 'Long URL is required'}), 400
         
-        # Prepare the data to insert
-        url_data = {
-            'keyword': keyword,
-            'url': longUrl,
-            'clicks': 0
-        }
+        if not keyword:
+            keyword = generate_random_string()
 
-        # Check if the keyword is already present
-        if is_keyword_present(keyword) == 0:
-            print('Keyword is not present, inserting into DB')
-            print('Data to be inserted:', url_data)  # Print the data being inserted
-            ShortUrlDatabase.insert_one(url_data)
-            print('DB insert successful')
-        else:
-            print('Keyword is present, throwing error')
+        if check_keyword_existence(keyword):
             return jsonify({'error': 'The keyword already exists. Please choose a different one.'}), 400
-
-    if request.method == 'GET':
-        print('Called get method on shorten end-point, throwing error')
-        return "GET Method Not Allowed On This End Point"
-
-    return jsonify({'shortUrl': str(request.host_url) + str(keyword)})
-
+        
+        insert_url_data(keyword, long_url)
+        short_url = f'{request.host_url}{keyword}'
+        return jsonify({'shortUrl': short_url}), 200
 
 @app.route('/analytics', methods=['GET', 'POST'])
-def analyticsAPI():
-    '''
-This /analytics route consists of both GET and POST requests.
-- GET: Returns the analytics.html file.
-- POST: Returns the total number of clicks (visits) for the specific shortened URL from the DB.
-'''
-
+def analytics():
+    """Return analytics data for a shortened URL."""
     if request.method == 'GET':
-        # Serve the analytics.html template for GET requests
-        print('Analytics page requested.')
         return render_template('analytics.html')
 
     if request.method == 'POST':
         keyword = request.json.get("keyword")
-        print('Keyword Received: ' + str(keyword))
-
-        # Check if the keyword exists in the database
-        url_data = ShortUrlDatabase.find_one({'keyword': keyword})
-
-        if url_data:
-            # Return the current clicks count without incrementing
-            clicks_count = url_data['clicks']
-            print(f'Keyword: {keyword}, Clicks Count: {clicks_count}')
-            return jsonify({'clicks': clicks_count}), 200
-        else:
-            print('Keyword not found in DB')
+        if not keyword:
+            return jsonify({'error': 'Keyword is required'}), 400
+        
+        url_data = get_long_url_by_keyword(keyword)
+        if not url_data:
             return jsonify({'error': 'Keyword not found.'}), 404
-
-
-
+        
+        return jsonify({'clicks': url_data['clicks']}), 200
 
 @app.route('/heartbeat')
-def hearBeat():
-    '''
-    This end point should do all the checks/ add dummy data to DB if required and respond saying the website is UP
-    '''
-    print('heartbeat API called')
+def heartbeat():
+    """Check if the website is running."""
     return 'The website is up'
 
 @app.route('/<keyword>')
-def reroute(keyword):
-    print('Clicked on shortURL')
-    link_status = 0
-    redirection = None  # Initialize redirection variable
-    print('Finding the URL Keyword')
-    print('Mongo Connection: ' + str(os.getenv('MONGO_PATH')[:6]))
+def redirect_to_long_url(keyword):
+    """Redirect to the long URL associated with the given keyword."""
+    url_data = get_long_url_by_keyword(keyword)
     
-    # Find the URL associated with the keyword
-    for item in ShortUrlDatabase.find():
-        if item['keyword'] == keyword:
-            redirection = item['url']
-            # Increment the clicks count
-            ShortUrlDatabase.update_one(
-                {'keyword': keyword}, 
-                {'$inc': {'clicks': 1}}  # Increment clicks by 1
-            )
-            print('Short URL <> Long URL mapping found in DB')
-            link_status = 1
-            break  # Break out of the loop once the keyword is found
-
-    if link_status == 0:
-        print('Link Not Found in DB')
-        return render_template('errorpage.html')
+    if not url_data:
+        return "Link Not Found", 404
     
-    print('Redirecting to long URL: ' + str(redirection))
-    return redirect(redirection, code=302)
-
+    update_click_count(keyword)
+    return redirect(url_data['url'], code=302)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
