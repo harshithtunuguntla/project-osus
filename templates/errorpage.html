@@ -4,11 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Lato:wght@400;700&display=swap"
     rel="stylesheet">
     <title>404 - Page Not Found</title>
     <style>
-
+.error-message {
+            color: red; /* Customize your error message color */
+            font-size: 24px; /* Customize font size */
+            display: flex;
+            align-items: center;
+        }
+        .error-message i {
+            margin-right: 10px; /* Space between icon and text */
+        }
 
         *{
             margin: 0;
@@ -89,8 +99,8 @@
 <body>
     
     <div class="container">
-        <h1> Oops! Page Not Found</h1>
-        <p> 404 - The URL you are trying to reach doesn't exist!</p>
+        <h1>{{ title }}</h1> <!-- Use the passed title variable -->
+        <p>{{ message }}</p> <!-- Use the passed message variable --> 
         <a href="/" class="btn"><i class="fa-regular fa-link"></i> Create a New Short URL</a>
     </div>
 
