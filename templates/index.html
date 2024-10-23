@@ -51,6 +51,29 @@
           <input type="text" class="form-control" id="keyword" placeholder="Enter custom keyword">          
           <p id="keywordError"></p>
         </div>
+        <div style="margin-top: 10px;" class="mb-3 row">
+          <div class="d-flex justify-content-center" style="margin-top: 8px; margin-bottom: 8px;">
+            <div style="font-size: 25px;">Set Link Expiration (Optional)</div>
+          </div>
+          
+          <div class="col-md-4">
+            <label for="expirationDate" class="form-label"> Date</label>
+            <input type="date" class="form-control" id="expirationDate">
+          </div>
+          <div class="col-md-4">
+            <label for="expirationTime" class="form-label">Time</label>
+            <input type="time" class="form-control" id="expirationTime">
+          </div>
+          <div class="col-md-4">
+            <label for="expirationPeriod" class="form-label">AM/PM</label>
+            <select class="form-control" id="expirationPeriod">
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
+          </div>
+        </div>
+        
+        
         <button type="submit" class="btn">Shorten</button>
       </form>
       <div class="mt-3" id="shortUrl"></div>
@@ -94,76 +117,89 @@
     })
 
     document.getElementById('shortenForm').addEventListener('submit', async function (e) {
-      e.preventDefault();
+    e.preventDefault();
 
-      const longUrl = document.getElementById('longUrl').value;
-      const keyword = document.getElementById('keyword').value;
-      const shortUrlContainer = document.getElementById('shortUrl');
+    const longUrl = document.getElementById('longUrl').value;
+    const keyword = document.getElementById('keyword').value;
+    const expirationDate = document.getElementById('expirationDate').value;
+    const expirationTime = document.getElementById('expirationTime').value;
+    const expirationPeriod = document.getElementById('expirationPeriod').value;
+    const shortUrlContainer = document.getElementById('shortUrl');
 
-      shortUrlContainer.innerHTML = 'Shortening...';
+    shortUrlContainer.innerHTML = 'Shortening...';
 
-      try {
+    try {
         // Check if keyword is valid
         const pattern = /^[a-zA-Z0-9\-._~]+$/;
         if (keyword !== '' && !pattern.test(keyword)) {
-          document.getElementById('keyword').focus();
-          const error = new Error('Invalid keyword');
-          const allowedChars = '[a-z] / [A-Z] / [0-9] / \"-\" / \"_\" / \"~\" / \".\"';
+            document.getElementById('keyword').focus();
+            const error = new Error('Invalid keyword');
+            const allowedChars = '[a-z] / [A-Z] / [0-9] / "-" / "_" / "~" / "."';
 
-          // Display error message below the input
-          document.getElementById('keywordError').innerHTML = error.message + "<br>" + `Allowed characters: ${allowedChars}`;
-
-          throw error;
+            // Display error message below the input
+            document.getElementById('keywordError').innerHTML = error.message + "<br>" + `Allowed characters: ${allowedChars}`;
+            throw error;
         } else {
-          // Clear error message below the input
-          document.getElementById('keywordError').innerHTML = '';
+            // Clear error message below the input
+            document.getElementById('keywordError').innerHTML = '';
         }
 
+        // Prepare the body for the POST request, sending null for optional fields if not provided
+        const body = {
+            longUrl,
+            keyword,
+            expirationDate: expirationDate || null,
+            expirationTime: expirationTime || null,
+            expirationPeriod: expirationPeriod || null,
+        };
+        console.log(body);
+
         const response = await fetch('/shorten', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ longUrl, keyword })
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
         });
 
-        
         const data = await response.json();
-        
+
         if (!response.ok) {
-          throw new Error(data.error || 'Failed to shorten URL');
-      }
+            throw new Error(data.error || 'Failed to shorten URL');
+        }
+
         shortUrlContainer.innerHTML = `
-                    <span style="color: white;">Shortened URL:</span> <a href="${data.shortUrl}" class="short-url" target="_blank">${data.shortUrl}</a>
-                    <i class="fas fa-copy copy-icon" title="Copy to clipboard"></i>
-                `;
+            <span style="color: white;">Shortened URL:</span> <a href="${data.shortUrl}" class="short-url" target="_blank">${data.shortUrl}</a>
+            <i class="fas fa-copy copy-icon" title="Copy to clipboard"></i>
+        `;
 
         // Add click event for the copy icon
         const copyIcon = document.querySelector('.copy-icon');
         const shortUrlElement = document.querySelector('.short-url');
 
         copyIcon.onclick = function () {
-          const tempInput = document.createElement('input');
-          tempInput.value = data.shortUrl;
-          document.body.appendChild(tempInput);
-          tempInput.select();
-          document.execCommand('copy');
-          document.body.removeChild(tempInput);
+            const tempInput = document.createElement('input');
+            tempInput.value = data.shortUrl;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
 
-          // Highlight the URL text when copied
-          shortUrlElement.classList.add('url-highlight');
+            // Highlight the URL text when copied
+            shortUrlElement.classList.add('url-highlight');
 
-          // Remove highlight after 0.3 seconds
-          setTimeout(() => {
-            shortUrlElement.classList.remove('url-highlight');
-          }, 300); // Set to 0.3s
+            // Remove highlight after 0.3 seconds
+            setTimeout(() => {
+                shortUrlElement.classList.remove('url-highlight');
+            }, 300); // Set to 0.3s
         };
-      } catch (error) {
+
+    } catch (error) {
         console.error('Error:', error);
-        shortUrlContainer.innerHTML = `Error: ${error.message}`;
-        shortUrlContainer.classList.add('error-message');
+        shortUrlContainer.innerHTML = `<span style="color: red;">${error.message}</span>`;
     }
-    });
+});
+
   </script>
 
 </body>
