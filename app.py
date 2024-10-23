@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import os
 import random
 import string
+import uuid
 
 load_dotenv()
 
@@ -15,9 +16,14 @@ db = client.ShortUrlDatabase
 url_collection = db.URLData
 
 # Helper Functions
-def generate_random_string(length=5):
-    """Generate a random string of specified length with both uppercase and lowercase letters."""
-    return ''.join(random.choices(string.ascii_letters, k=length))
+def generate_random_string():
+    """
+    Generates a random string using UUID of length 36.
+
+    Returns:
+        str: A random UUID string.
+    """
+    return str(uuid.uuid4())
 
 def check_keyword_existence(keyword):
     """Check if the given keyword already exists in the database."""
@@ -67,6 +73,14 @@ def shorten_url():
         
         if not keyword:
             keyword = generate_random_string()
+            max_attempts = 5
+            attempts = 0
+            while check_keyword_existence(keyword) and attempts < max_attempts:
+                keyword = generate_random_string()
+                attempts += 1
+                
+            if attempts == max_attempts:
+                return jsonify({'error': 'Failed to generate a unique keyword. Please try again.'}), 500
 
         if check_keyword_existence(keyword):
             return jsonify({'error': 'The keyword already exists. Please choose a different one.'}), 400
