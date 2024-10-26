@@ -12,7 +12,6 @@
   <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}" type="image/x-icon">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 
 <body>
@@ -137,13 +136,11 @@
         shortUrlContainer.innerHTML = `
                     <span style="color: white;">Shortened URL:</span> <a href="${data.shortUrl}" class="short-url" target="_blank">${data.shortUrl}</a>
                     <i class="fas fa-copy copy-icon" title="Copy to clipboard"></i>
-                    <i class="fas fa-qrcode qrcode-icon" title="Generate QR code"></i>
                 `;
 
         // Add click event for the copy icon
         const copyIcon = document.querySelector('.copy-icon');
         const shortUrlElement = document.querySelector('.short-url');
-        const qrCodeIcon = document.querySelector('.qrcode-icon');
 
         copyIcon.onclick = function () {
           const tempInput = document.createElement('input');
@@ -161,64 +158,6 @@
             shortUrlElement.classList.remove('url-highlight');
           }, 300); // Set to 0.3s
         };
-
-        // Add click event for the QR code icon
-        qrCodeIcon.onclick = function () {
-          // Create the modal container
-          const modalContainer = document.createElement('div');
-          modalContainer.classList.add('modal-container');
-
-          // Create the modal content
-          const modalContent = document.createElement('div');
-          modalContent.classList.add('modal-content');
-
-          // Create the close button
-          const closeButton = document.createElement('span');
-          closeButton.classList.add('close-button');
-          closeButton.innerHTML = '&times;';
-            closeButton.onclick = function () {
-            document.body.removeChild(modalContainer);
-            };
-
-            // Create the QR code container
-            const qrCodeContainer = document.createElement('div');
-            qrCodeContainer.id = 'qrcode';
-
-            // Append elements to the modal content
-            modalContent.appendChild(closeButton);
-            modalContent.appendChild(qrCodeContainer);
-
-            // Append modal content to the modal container
-            modalContainer.appendChild(modalContent);
-
-            // Append modal container to the body
-            document.body.appendChild(modalContainer);
-
-            // Generate the QR code
-            const qrCode = new QRCode(qrCodeContainer, {
-            text: data.shortUrl,
-            width: 128,
-            height: 128,
-            colorDark: "#9B59B6",
-            });
-            modalContent.appendChild(document.createElement('br'));
-            // Create the download button
-            const downloadButton = document.createElement('button');
-            downloadButton.classList.add('download-button');
-            downloadButton.classList.add('btn');
-            downloadButton.innerHTML = 'Download QR Code';
-            downloadButton.onclick = function () {
-              const canvas = qrCodeContainer.querySelector('canvas');
-              const qrCodeUrl = canvas.toDataURL('image/png');
-              const link = document.createElement('a');
-              link.href = qrCodeUrl;
-              link.download = 'qrcode.png';
-              link.click();
-            };
-
-            // Append the download button to the modal content
-            modalContent.appendChild(downloadButton);
-          };
       } catch (error) {
         console.error('Error:', error);
         shortUrlContainer.innerHTML = `Error: ${error.message}`;
