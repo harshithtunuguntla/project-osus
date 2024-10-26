@@ -1,142 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project OSUS - Open Source URL Shortener</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project OSUS | Docs</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='images/logo.png') }}"
+      type="image/x-icon"
+    />
     <style>
-        /* General Styling */
-        body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-            color: #333;
-        }
+      /* General Styling */
+      body {
+        font-family: "Inter", sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #121212;
+        color: #ffffff;
+        line-height: 1.6;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
 
-        /* Header */
-        header {
-            background-color: #000000;
-            color: #fff;
-            padding: 10px;
-            text-align: center;
-            font-size: 24px;
-        }
+      /* Header */
+      header {
+        background-color: #000000;
+        color: #9b59b6;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        top: 0;
+        z-index: 100;
+      }
 
-        /* Main Layout */
+      /* Center the h1 and make sure it doesn't push the button */
+      header h1 {
+        text-align: center;
+        margin: 0;
+        flex-grow: 1;
+        font-size: 24px;
+        display: flex;
+        justify-content: center;
+      }
+
+      /* Position the button at the end */
+      header .btn {
+        background-color: #9b59b6;
+        color: #fff;
+        font-weight: bold;
+        border-radius: 30px;
+        padding: 10px 20px;
+        text-decoration: none;
+        transition: background-color 0.3s ease-in-out;
+      }
+
+      /* Button hover effect */
+      header .btn:hover {
+        background-color: #8e44ad;
+      }
+
+      /* Main Layout */
+      .main-layout {
+        display: flex;
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 0 20px;
+        flex: 1;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 240px;
+        background-color: #1f1f1f;
+        border-right: 1px solid #333;
+        padding: 20px;
+        margin-right: 20px;
+        flex-shrink: 0;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        border-radius: 8px;
+        color: #bbbbbb;
+        max-height: calc(
+          100vh - 80px
+        ); /* Ensure it doesn't exceed the screen height */
+      }
+
+      .sidebar h2 {
+        font-size: 18px;
+        margin-bottom: 15px;
+        color: #9b59b6;
+        font-weight: 600;
+      }
+
+      .sidebar ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .sidebar ul li {
+        margin-bottom: 10px;
+      }
+
+      .sidebar ul li a {
+        text-decoration: none;
+        color: #9b59b6;
+        font-weight: 500;
+      }
+
+      .sidebar ul li a:hover {
+        text-decoration: underline;
+      }
+
+      /* Content */
+      .content {
+        flex-grow: 1;
+        background-color: #1f1f1f;
+        padding: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        border-radius: 8px;
+      }
+
+      /* Section Container */
+      .section-container {
+        margin-bottom: 20px;
+        padding: 20px;
+        background-color: #2c3e50;
+        border-radius: 8px;
+      }
+
+      .section-container h2 {
+        font-size: 22px;
+        margin-bottom: 15px;
+        color: #9b59b6;
+      }
+
+      /* Code Blocks */
+      pre.code-block {
+        background-color: #272822;
+        padding: 15px;
+        border-radius: 6px;
+        font-family: "Courier New", monospace;
+        color: #f8f8f2;
+        font-size: 14px;
+      }
+
+      /* Footer */
+      footer {
+        background-color: #000000;
+        color: #ffffff;
+        text-align: center;
+        padding: 10px;
+        bottom: 0;
+      }
+
+      footer a {
+        color: #9b59b6;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      footer .heart {
+        color: #9b59b6;
+      }
+
+      .footer-details {
+        text-align: center;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
         .main-layout {
-            display: flex;
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 0 20px;
+          flex-direction: column;
         }
 
-        /* Sidebar */
         .sidebar {
-            width: 200px;
-            background-color: #fff;
-            border-right: 1px solid #e0e0e0;
-            padding: 5px;
-            margin-right: 10px;
-            position: sticky;
-            top: 20px;
-            flex-shrink: 0;
+          width: 100%;
+          margin-bottom: 20px;
+          box-shadow: none;
         }
 
-        .sidebar h2 {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: #666;
-        }
-
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .sidebar ul li {
-            margin-bottom: 10px;
-        }
-
-        .sidebar ul li a {
-            text-decoration: none;
-            color: #0060df;
-            font-weight: 600;
-        }
-
-        .sidebar ul li a:hover {
-            text-decoration: underline;
-        }
-
-        /* Main Content */
         .content {
-            flex-grow: 1;
-            background-color: white;
-            padding: 20px;
+          padding: 20px;
+          max-height: none;
         }
-
-        /* Section Container */
-        .section-container {
-            margin-bottom: 40px;
-            padding: 20px;
-            background-color: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-        }
-
-        /* Code Blocks */
-        pre.code-block {
-            background-color: #f1f1f1;
-            padding: 10px;
-            border-radius: 6px;
-            font-family: 'Courier New', monospace;
-            overflow-x: auto;
-            color: #333;
-        }
-
-        /* Footer */
-        footer {
-            background-color: #000000;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            margin-top: 20px;
-        }
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <!-- Header -->
     <header>
-        <h1>Project OSUS - Open Source URL Shortener</h1>
+      <h1>Project OSUS - Open Source URL Shortener</h1>
+      <a href="/" class="btn">Use Now</a>
     </header>
 
     <!-- Main Layout -->
     <div class="main-layout">
+      <!-- Sidebar -->
+      <nav class="sidebar">
+        <h2>Getting Started</h2>
+        <ul>
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#installation">Installation</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#contributing">Contributing</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contact">Contact Us</a></li>
+        </ul>
+      </nav>
 
-        <!-- Sidebar -->
-        <nav class="sidebar">
-            <h2>Getting Started</h2>
-            <ul>
-                <li><a href="#overview">Overview</a></li>
-                <li><a href="#installation">Installation</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#contributing">Contributing</a></li>
-                <li><a href="#faq">FAQ</a></li>
-                <li><a href="#contact">Contact Us</a></li>
-            </ul>
-        </nav>
-
-        <!-- Content -->
-        <main class="content">
-
-            <!-- Overview Section -->
-            <div class="section-container" id="overview">
-                <h2>Overview</h2>
-                <p>Welcome to <strong>Project OSUS</strong>, an open-source URL shortener built using Flask, Python, and MongoDB. This project is part of Hacktoberfest 2024, encouraging contributions from developers and non-developers alike. The goal is to provide a simple, easy-to-use URL shortening service while fostering collaboration in the open-source community.</p>
-                <p>With Project OSUS, you can shorten long URLs, track clicks, and much more. The platform is designed with flexibility in mind, allowing developers to contribute and extend its functionality.</p>
-            </div>
+      <!-- Content -->
+      <main class="content">
+        <!-- Overview Section -->
+        <div class="section-container" id="overview">
+          <h2>Overview</h2>
+          <p>
+            Welcome to <strong>Project OSUS</strong>, an open-source URL
+            shortener built using Flask, Python, and MongoDB. This project is
+            part of Hacktoberfest 2024, encouraging contributions from
+            developers and non-developers alike. The goal is to provide a
+            simple, easy-to-use URL shortening service while fostering
+            collaboration in the open-source community.
+          </p>
+        </div>
 
             <!-- Installation Section -->
             <div class="section-container" id="installation">
@@ -212,12 +302,21 @@
             </div>
 
         </main>
+    
+      </main>
     </div>
 
     <!-- Footer -->
     <footer>
-        <p>© 2024 Project OSUS. All rights reserved.</p>
+      <p>© 2024 Project OSUS. All rights reserved.</p>
+      <div>
+        <a href="https://example.com" target="_blank"
+          >Open Source Developed <span class="heart">❤</span></a
+        >
+      </div>
+      <div class="footer-details">
+        <p>HacktoberFest 2024</p>
+      </div>
     </footer>
-
-</body>
+  </body>
 </html>
