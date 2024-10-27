@@ -36,22 +36,23 @@
     </ul>
   </header>
 
-  <!-- Main Section -->
-  <main class="main-content">
-    <div class="url-box">
+<!-- Main Section -->
+<main class="main-content">
+  <div class="url-box">
       <h2 class="text-center">Track your URL</h2>
       <form id="shortenForm">
-        <div class="mb-3">
-          <span id="keywordLengthIndicator"></span>
-          <label for="keyword" class="form-label" >Enter Keyword </label>
-          <input type="text" class="form-control" id="keyword" placeholder="Enter custom keyword"required>          
-          <p id="keywordError"></p>
-        </div>
-        <button type="submit" class="btn">Analytics</button>
+          <div class="mb-3">
+              <span id="keywordLengthIndicator"></span>
+              <label for="keyword" class="form-label">Enter Keyword</label>
+              <input type="text" class="form-control" id="keyword" placeholder="Enter custom keyword" required>          
+              <p id="keywordError"></p>
+          </div>
+          <button type="submit" class="btn">Analytics</button>
       </form>
       <div class="mt-3 text-center" id="shortUrl"></div> <!-- Centered content -->
-    </div>
-  </main>
+      <div class="mt-3 text-center" id="expiration"></div> <!-- New div for expiration details -->
+  </div>
+</main>
 
   <!-- Auto Focus on URL input -->
   <script>
@@ -88,14 +89,15 @@
       const currentLength = e.target.value.length;
       keywordLengthIndicator.innerHTML = `${currentLength}/${maxLength}`
     })
-
     document.getElementById('shortenForm').addEventListener('submit', async function (e) {
     e.preventDefault();
 
     const keyword = document.getElementById('keyword').value;
     const shortUrlContainer = document.getElementById('shortUrl');
+    const expirationContainer = document.getElementById('expiration'); // Get the expiration div
 
     shortUrlContainer.innerHTML = 'Fetching analytics...';
+    expirationContainer.innerHTML = ''; // Clear previous expiration details
 
     try {
         // Check if keyword is valid
@@ -126,11 +128,101 @@
         if (!response.ok) {
             throw new Error(data.error || 'Failed to fetch analytics');
         }
+        console.log("After SHortnerUrl displayed");
 
         // Display the number of clicks
         shortUrlContainer.innerHTML = `
-            <span style="color: white;"><i class="fa-solid fa-chart-line"></i></span> <strong> ${data.clicks}</strong>
+            <span style="color: white;"><i class="fa-solid fa-chart-line"></i> Views</span> <strong>${data.clicks}</strong>
         `;
+        console.log("Date");
+        console.log(data.expiration);
+
+        // Handle expiration details
+        if (data.expiration) {
+    const expirationDate = new Date(data.expiration);
+    const now = new Date();
+    const remainingTime = expirationDate - now;
+
+    // Log the current time and expiration date for debugging
+    console.log(now);
+    console.log(expirationDate);
+    console.log(remainingTime);
+
+    // Prepare the expiration message
+    let expirationHTML = '';
+
+    if (remainingTime <= 0) {
+        expirationHTML = 'Expired';
+    } else {
+        const remainingSeconds = Math.floor(remainingTime / 1000);
+        const expirationFormattedDate = expirationDate.toISOString().split('T')[0]; // YYYY-MM-DD format
+
+        // Prepare the remaining time details
+        const days = Math.floor(remainingSeconds / (3600 * 24));
+        const hours = Math.floor((remainingSeconds % (3600 * 24)) / 3600);
+        const minutes = Math.floor((remainingSeconds % 3600) / 60);
+        const seconds = remainingSeconds % 60;
+
+        // Create expiration message based on the remaining time
+        if (remainingSeconds < 60) {
+            // Less than a minute
+            expirationHTML = `Remaining time: ${seconds} Seconds`;
+        } else if (remainingSeconds < 3600) {
+            // Less than an hour
+            expirationHTML = `Remaining time: ${minutes} Minutes | ${seconds} Seconds`;
+        } else if (remainingSeconds < 86400) {
+            // Less than a day
+            expirationHTML = `Remaining time: ${hours} Hours | ${minutes} Minutes | ${seconds} Seconds`;
+        } else if (days >= 30) {
+            // More than a month
+            expirationHTML = `Expires on: ${expirationFormattedDate}`;
+        } else {
+            // Less than a month
+            expirationHTML = `Remaining time: ${days} Days | ${minutes} Minutes | ${seconds} Seconds`;
+        }
+    }
+
+    // Display expiration details
+    expirationContainer.innerHTML = `<div><i class="fa-solid fa-clock-rotate-left"></i> ${expirationHTML}</div>`;
+
+    // Countdown Timer
+    const countdownInterval = setInterval(() => {
+        const newRemainingTime = expirationDate - new Date();
+
+        if (newRemainingTime <= 0) {
+            clearInterval(countdownInterval); // Stop the timer if expired
+            expirationContainer.innerHTML = `<div><i class="fa-solid fa-clock-rotate-left"></i> Expired</div>`;
+        } else {
+            const newRemainingSeconds = Math.floor(newRemainingTime / 1000);
+            const newDays = Math.floor(newRemainingSeconds / (3600 * 24));
+            const newHours = Math.floor((newRemainingSeconds % (3600 * 24)) / 3600);
+            const newMinutes = Math.floor((newRemainingSeconds % 3600) / 60);
+            const newSeconds = newRemainingSeconds % 60;
+
+            // Update the countdown display based on the same logic
+            let countdownHTML = '';
+
+            if (newRemainingSeconds < 60) {
+                countdownHTML = `Remaining time: ${newSeconds} Seconds`;
+            } else if (newRemainingSeconds < 3600) {
+                countdownHTML = `Remaining time: ${newMinutes} Minutes | ${newSeconds} Seconds`;
+            } else if (newRemainingSeconds < 86400) {
+                countdownHTML = `Remaining time: ${newHours} Hours | ${newMinutes} Minutes | ${newSeconds} Seconds`;
+            } else if (newDays >= 30) {
+                countdownHTML = `Expires on: ${expirationFormattedDate}`;
+            } else {
+                countdownHTML = `Remaining time: ${newDays} Days | ${newMinutes} Minutes | ${newSeconds} Seconds`;
+            }
+
+            // Update the countdown display
+            expirationContainer.innerHTML = `<div><i class="fa-solid fa-clock-rotate-left"></i> ${countdownHTML}</div>`;
+        }
+    }, 1000);
+} else {
+    expirationContainer.innerHTML = ''; // Clear if no expiration
+}
+
+
 
     } catch (error) {
         console.error('Error:', error);
@@ -138,6 +230,7 @@
         shortUrlContainer.classList.add('error-message');
     }
 });
+
 
   </script>
 
