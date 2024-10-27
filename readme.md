@@ -196,6 +196,4 @@ This project is licensed under the MIT License. See the [LICENSE](./LICENSE) fil
 
 Got questions, or need help or you want to help maintainers?? Feel free to reach out via issues or via:
 
-- **WhatsApp**: [Join Us on WhatsApp](https://chat.whatsapp.com/GGFHTgViPUgIbV2EB9Ymm7)
-- **Instagram**: [Follow Us on Instagram](https://instagram.com/harshith.presents)
-
+<a href="https://img.shields.io/badge/Whatsapp-25d366?style=for-the-badge&logo=whatsapp&logoColor=white"><img alt="Whatsapp" src="https://img.shields.io/badge/Whatsapp-25d366?style=for-the-badge&logo=whatsapp&logoColor=white">  <a  href="https://instagram.com/harshith.presents"><img alt="Instagram" src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white">
