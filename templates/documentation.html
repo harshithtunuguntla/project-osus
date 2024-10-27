@@ -150,28 +150,39 @@
       }
 
       /* Footer */
-      footer {
-        background-color: #000000;
-        color: #ffffff;
-        text-align: center;
-        padding: 10px;
-        bottom: 0;
-      }
+      body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+  }
 
-      footer a {
-        color: #9b59b6;
-        text-decoration: none;
-        font-weight: bold;
-      }
+  footer {
+    background-color: #000000;
+    color: #ffffff;
+    text-align: center;
+    padding: 10px;
+    margin-top: auto;
+  }
 
-      footer .heart {
-        color: #9b59b6;
-      }
+  footer a {
+    color: #9b59b6;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+  }
 
-      .footer-details {
-        text-align: center;
-      }
+  footer a:hover {
+    color: #ffffff;
+  }
 
+  footer .heart {
+    color: #9b59b6;
+  }
+
+  .footer-details {
+    text-align: center;
+  }
       /* Responsive Design */
       @media (max-width: 768px) {
         .main-layout {
@@ -309,14 +320,13 @@
     <!-- Footer -->
     <footer>
       <p>© 2024 Project OSUS. All rights reserved.</p>
-      <div>
-        <a href="https://example.com" target="_blank"
-          >Open Source Developed <span class="heart">❤</span></a
-        >
+      <div class="footer-link">
+        <a href="https://example.com" target="_blank">Open Source Developed <span class="heart">❤</span></a>
       </div>
       <div class="footer-details">
-        <p>HacktoberFest 2024</p>
+        <p><strong>HacktoberFest 2024</strong></p>
       </div>
     </footer>
+    
   </body>
 </html>
