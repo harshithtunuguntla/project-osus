@@ -125,6 +125,14 @@ body {
   flex-shrink: 0;
   flex-direction: column;
 }
+.footer a:hover {
+  color: #d2b4de;
+}
+
+.footer .heart:hover {
+  color: #c39bd3;
+  transform: scale(1.1);
+}
 
 .footer a {
   color: #9b59b6;
@@ -135,6 +143,12 @@ body {
 .footer .heart {
   color: #8e44ad;
 }
+
+.footer-details {
+  margin-top: 20px;
+  text-align: center;
+}
+
 .copy-icon {
   cursor: pointer;
   color: #9b59b6;
@@ -251,13 +265,11 @@ body {
   }
 
   .footer-details {
-    margin: 8px;
-    text-align: center;
-}
-
-.footer-details p {
+    margin: 8;
+  }
+  .footer-details p {
     margin-bottom: 0;
-}
+  }
 }
 
 /***** End MEDIA QUERY *****/
