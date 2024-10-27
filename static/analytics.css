@@ -138,6 +138,15 @@ body {
     color: #8E44AD;
   }
 
+  .footer a:hover {
+    color: #d2b4de;
+  }
+  
+  .footer .heart:hover {
+    color: #c39bd3;
+    transform: scale(1.1);
+  }
+  
   .footer-details {
     margin-top: 20px;
     text-align: center;

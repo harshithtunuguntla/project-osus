@@ -51,18 +51,23 @@
 
       /* Position the button at the end */
       header .btn {
-        background-color: #9b59b6;
-        color: #fff;
-        font-weight: bold;
         border-radius: 30px;
         padding: 10px 20px;
+        margin-left: 10px;
+        transition: all 0.3s ease-in-out;
+        background: linear-gradient(to right, #8e44ad, #9b59b6);
+        color: #fff;
         text-decoration: none;
-        transition: background-color 0.3s ease-in-out;
       }
 
-      /* Button hover effect */
+      /* Button hover effect
       header .btn:hover {
         background-color: #8e44ad;
+      } */
+      
+      header .btn:hover {
+        background: linear-gradient(to right, #f9e9ff, #f7e3ff);
+        color: #8E44AD;
       }
 
       /* Main Layout */
@@ -178,6 +183,11 @@
 
   footer .heart {
     color: #9b59b6;
+  }
+
+  footer .heart:hover {
+    color: #c39bd3;
+    transform: scale(1.1);
   }
 
   .footer-details {
