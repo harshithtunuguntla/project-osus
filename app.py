@@ -14,9 +14,8 @@ load_dotenv()
 
 
 app = Flask(__name__)
-
 # MongoDB Setup
-client = MongoClient(os.getenv('MONGO_PATH'),int(os.getenv('MONGO_PORT')))
+client = MongoClient(os.getenv('MONGO_PATH',int(os.getenv('MONGO_PORT'))))
 db = client.ShortUrlDatabase
 url_collection = db.URLData
 
@@ -97,6 +96,10 @@ def home():
 def documentation():
     """Render the documentation page."""
     return render_template('documentation.html')
+@app.route('/api-docs')
+def api_documentation():
+    """Render the api docs page."""
+    return render_template('api.html')
 
 @app.route('/getURL')
 def current_url():
