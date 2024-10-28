@@ -11,11 +11,10 @@ import random
 import string
 
 load_dotenv()
-#,int(os.getenv('MONGO_PORT'))
 
 app = Flask(__name__)
 # MongoDB Setup
-client = MongoClient(os.getenv('MONGO_PATH'))
+client = MongoClient(os.getenv('MONGO_PATH',int(os.getenv('MONGO_PORT'))))
 db = client.ShortUrlDatabase
 url_collection = db.URLData
 
