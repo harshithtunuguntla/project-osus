@@ -7,7 +7,15 @@ body {
     flex-direction: column;
     min-height: 100vh;
   }
-
+  .btn {
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .small-icon {
+    font-size: 0.75em; /* Reduce icon size */
+    margin-left: 8px;  /* Add space between text and icon */
+  }
   .overlay {
     position: absolute;
     top: 0;
