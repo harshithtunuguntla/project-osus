@@ -10,8 +10,262 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}" type="image/x-icon">
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+  <style>
+    body {
+      font-family: 'Lato', sans-serif;
+      background: url('https://img.pikbest.com/wp/202347/purple-background-image-rendering-of-a-3d-illustrated-with-black-and-shapes_9770212.jpg!bw700') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .header,
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      z-index: 10;
+    }
+
+    .header {
+      background-color: #000;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .header .brand {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #9B59B6;
+    }
+
+    .header .btn {
+      border-radius: 30px;
+      padding: 10px 20px;
+      margin-left: 10px;
+      transition: all 0.3s ease-in-out;
+      background: linear-gradient(to right, #8E44AD, #9B59B6);
+      color: #fff;
+    }
+
+    .header .btn:hover {
+      background : linear-gradient(to right, #f9e9ff, #f7e3ff);
+      color: #8644ad;
+    }
+
+    @media (max-width: 768px) {
+      .header .btn.documentation {
+        display: none;
+      }
+    }
+
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-grow: 1;
+      position: relative;
+      z-index: 10;
+    }
+
+    .url-box {
+      background-color: #2C3E50;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      width: 100%;
+      max-width: 500px;
+      opacity: 0;
+      transform: scale(0.8) rotate(3deg);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      animation: fadeInScale 0.5s forwards;
+    }
+
+    @keyframes fadeInScale {
+      0% {
+        opacity: 0;
+        transform: scale(0.8) rotate(3deg);
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: scale(1.05) rotate(-3deg);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+    }
+
+    .url-box:hover {
+      transform: scale(1.03);
+      transition: transform 0.3s ease;
+    }
+
+    .url-box .btn {
+      background-color: #9B59B6;
+      color: #fff;
+      font-weight: bold;
+      border-radius: 30px;
+      padding: 10px 20px;
+      width: 100%;
+      transition: background-color 0.3s ease-in-out;
+    }
+
+    .url-box .btn:hover {
+      background-color: #8E44AD;
+    }
+
+    .footer {
+      background-color: #000;
+      color: #fff;
+      text-align: center;
+      padding: 40px;
+      flex-shrink: 0;
+      flex-direction: column;
+    }
+
+    .footer a {
+      color: #9B59B6;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .footer .heart {
+      color: #8E44AD;
+    }
+
+    .footer-details {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .copy-icon {
+      cursor: pointer;
+      color: #9B59B6;
+      margin-left: 10px;
+      transition: color 0.3s;
+      font-size: 1.2em;
+    }
+
+    .url-highlight {
+      background-color: #9B59B6;
+      color: white;
+      padding: 2px 4px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+    .short-url{
+      word-wrap: break-word;  
+  overflow-wrap: break-word;
+    }
+
+    .error-message {
+      color: red;
+      font-weight: bold;
+    }
+
+    #keywordLengthIndicator {
+      float: right;
+    }
+    
+      /* Metadata Section */
+      #result {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 16px;
+        background-color: #f9f9f9;
+        max-width: 600px;
+        margin: 20px auto;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      }
+    
+      #result h2 {
+        font-size: 1.5em;
+        color: #333;
+        margin-bottom: 12px;
+      }
+    
+      #result h2 a {
+        color: #1a73e8;
+        text-decoration: none;
+      }
+    
+      #result h2 a:hover {
+        text-decoration: underline;
+      }
+    
+      #result h3 {
+        font-size: 1.2em;
+        color: #555;
+        margin-top: 16px;
+        border-bottom: 2px solid #ddd;
+        padding-bottom: 6px;
+        font-weight: 600;
+      }
+    
+      #result p {
+        font-size: 1em;
+        color: #666;
+        line-height: 1.6;
+        margin: 8px 0;
+      }
+    
+      /* Metadata Image Styling */
+      #result img {
+        border-radius: 8px;
+        max-width: 100%;
+        height: auto;
+        margin-top: 16px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      }
+    
+      /* Button Styles */
+      .btn {
+        padding: 10px 20px;
+        color: #fff;
+        background-color: #1a73e8;
+        border: none;
+        border-radius: 5px;
+        text-transform: uppercase;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+        text-decoration: none;
+        margin-top: 20px;
+      }
+    
+      .btn:hover {
+        background-color: #0056c1;
+      }
+    
+      /* URL Highlight Effect */
+      .url-highlight {
+        background-color: #e0f7fa;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+        color: #00796b;
+        transition: background-color 0.3s ease;
+      }
+    
+    
+  </style>
 </head>
 
 <body>
@@ -22,18 +276,13 @@
   <header class="header">
     <div class="brand">
       <img src="../static/images/logo.png" alt="OSUS logo" width="75px" height="70px">
-      <span>O S U S</span>
-    </div>
+      O S U S</div>
+    <div>
+      <a href="/knowmore" class="btn">Know More</a>
+      <a href="/analytics" class="btn ">Analytics</a>
 
-    <input type="checkbox" id="check">
-    <label for="check" class="checkbtn">
-        <i class="fa fa-bars"></i>
-    </label>
-    <ul>
-      <li><a href="/knowmore" class="btn">Know More</a></li>
-      <li><a href="/analytics" class="btn ">Analytics</a></li>
-      <li><a href="/documentation" class="btn documentation">Documentation</a></li>
-    </ul>
+      <a href="/documentation" class="btn documentation">Documentation</a>
+    </div>
   </header>
 
   <!-- Main Section -->
@@ -55,6 +304,8 @@
       </form>
       <div class="mt-3" id="shortUrl"></div>
     </div>
+    <div id="result"></div>
+    
   </main>
 
   <!-- Auto Focus on URL input -->
@@ -73,98 +324,102 @@
       <p>HacktoberFest 2024</p>
     </div>
   </footer>
-
   <script>
     // Define the maximum length of the keyword
-    const maxKeywordLength = 50
-
+    const maxKeywordLength = 50;
+  
     // Set the maximum length attribute for the keyword input
-    const keywordInput = document.getElementById('keyword')
-    keywordInput.setAttribute('maxlength', maxKeywordLength)
-    
+    const keywordInput = document.getElementById('keyword');
+    keywordInput.setAttribute('maxlength', maxKeywordLength);
+  
     // Set the initial length indicator  
     const keywordLengthIndicator = document.getElementById('keywordLengthIndicator');
-    keywordLengthIndicator.innerHTML = `${keywordInput.value.length}/${maxKeywordLength}`
-
+    keywordLengthIndicator.innerHTML = `${keywordInput.value.length}/${maxKeywordLength}`;
+  
     // Add event listener to the keyword input
     keywordInput.addEventListener('input', function (e) {
       const maxLength = parseInt(e.target.getAttribute('maxlength'));
       const currentLength = e.target.value.length;
-      keywordLengthIndicator.innerHTML = `${currentLength}/${maxLength}`
-    })
-
+      keywordLengthIndicator.innerHTML = `${currentLength}/${maxLength}`;
+    });
+  
     document.getElementById('shortenForm').addEventListener('submit', async function (e) {
       e.preventDefault();
-
+  
       const longUrl = document.getElementById('longUrl').value;
       const keyword = document.getElementById('keyword').value;
       const shortUrlContainer = document.getElementById('shortUrl');
-
+  
       shortUrlContainer.innerHTML = 'Shortening...';
-
+  
       try {
         // Check if keyword is valid
         const pattern = /^[a-zA-Z0-9\-._~]+$/;
         if (keyword !== '' && !pattern.test(keyword)) {
           document.getElementById('keyword').focus();
           const error = new Error('Invalid keyword');
-          const allowedChars = '[a-z] / [A-Z] / [0-9] / \"-\" / \"_\" / \"~\" / \".\"';
-
+          const allowedChars = '[a-z] / [A-Z] / [0-9] / "-" / "_" / "~" / "."';
+  
           // Display error message below the input
           document.getElementById('keywordError').innerHTML = error.message + "<br>" + `Allowed characters: ${allowedChars}`;
-
           throw error;
         } else {
           // Clear error message below the input
           document.getElementById('keywordError').innerHTML = '';
         }
-
+  
+        // Make POST request to /shorten
         const response = await fetch('/shorten', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ longUrl, keyword })
         });
-
-        
+  
         const data = await response.json();
-        
-        if (!response.ok) {
-          throw new Error(data.error || 'Failed to shorten URL');
-      }
-        shortUrlContainer.innerHTML = `
-                    <span style="color: white;">Shortened URL:</span> <a href="${data.shortUrl}" class="short-url" target="_blank">${data.shortUrl}</a>
-                    <i class="fas fa-copy copy-icon" title="Copy to clipboard"></i>
-                `;
-
-        // Add click event for the copy icon
-        const copyIcon = document.querySelector('.copy-icon');
-        const shortUrlElement = document.querySelector('.short-url');
-
-        copyIcon.onclick = function () {
-          const tempInput = document.createElement('input');
-          tempInput.value = data.shortUrl;
-          document.body.appendChild(tempInput);
-          tempInput.select();
-          document.execCommand('copy');
-          document.body.removeChild(tempInput);
-
-          // Highlight the URL text when copied
-          shortUrlElement.classList.add('url-highlight');
-
-          // Remove highlight after 0.3 seconds
-          setTimeout(() => {
-            shortUrlElement.classList.remove('url-highlight');
-          }, 300); // Set to 0.3s
-        };
+        if (response.ok) {
+          // Display the shortened URL and metadata
+          document.getElementById('result').innerHTML = `
+              <h2>Shortened URL: <a href="${data.shortUrl}" target="_blank">${data.shortUrl}</a></h2>
+              <h3>Metadata:</h3>
+              <p><strong>Title:</strong> ${data.metadata.title}</p>
+              <p><strong>Description:</strong> ${data.metadata.description}</p>
+              ${data.metadata.image ? `<img src="${data.metadata.image}" alt="Preview Image" style="max-width: 100%; height: auto;">` : ''}
+          `;
+  
+          // Enable the copy functionality for the shortened URL
+          const copyIcon = document.querySelector('.copy-icon');
+          const shortUrlElement = document.querySelector('.short-url');
+  
+          if (copyIcon && shortUrlElement) {
+            copyIcon.onclick = function () {
+              const tempInput = document.createElement('input');
+              tempInput.value = data.shortUrl;
+              document.body.appendChild(tempInput);
+              tempInput.select();
+              document.execCommand('copy');
+              document.body.removeChild(tempInput);
+  
+              // Highlight the URL text when copied
+              shortUrlElement.classList.add('url-highlight');
+  
+              // Remove highlight after 0.3 seconds
+              setTimeout(() => {
+                shortUrlElement.classList.remove('url-highlight');
+              }, 300);
+            };
+          }
+        } else {
+          document.getElementById('result').innerText = data.error;
+        }
       } catch (error) {
         console.error('Error:', error);
         shortUrlContainer.innerHTML = `Error: ${error.message}`;
         shortUrlContainer.classList.add('error-message');
-    }
+      }
     });
   </script>
+  
+  
 
 </body>
 
