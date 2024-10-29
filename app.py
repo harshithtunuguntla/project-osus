@@ -15,7 +15,7 @@ load_dotenv()
 
 app = Flask(__name__)
 
-# # MongoDB Setup
+# MongoDB Setup
 client = MongoClient(os.getenv('MONGO_PATH'),int(os.getenv('MONGO_PORT')))
 db = client.ShortUrlDatabase
 url_collection = db.URLData

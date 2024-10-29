@@ -15,9 +15,9 @@
 </head>
 
 <body>
-  
+
   <div class="overlay"></div>
-  
+
   <!-- Header Section -->
   <header class="header">
     <div class="brand">
@@ -36,15 +36,8 @@
     </ul>
   </header>
 
-
   <!-- Main Section -->
   <main class="main-content">
-    <div class="video-container">
-      <video autoplay muted loop id="background-video">
-        <source src="{{ url_for('static', filename='background-video.mp4') }}" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-    </div>
     <div class="url-box">
       <h2 class="text-center">Shorten Your URL</h2>
       <form id="shortenForm">
@@ -106,8 +99,6 @@
 
 
   <script>
-    var vid = document.getElementById("background-video");
-    vid.playbackRate = 2.0;
     // Define the maximum length of the keyword
     const maxKeywordLength = 50
 

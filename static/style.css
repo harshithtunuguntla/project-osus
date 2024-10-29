@@ -1,27 +1,13 @@
 body {
   font-family: "Lato", sans-serif;
+  background: url("https://img.pikbest.com/wp/202347/purple-background-image-rendering-of-a-3d-illustrated-with-black-and-shapes_9770212.jpg!bw700")
+    no-repeat center center fixed;
+  background-size: cover;
   color: #fff;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-
-  position: relative;
-  scroll-behavior: smooth;
-}
-
-
-.video-container {
-  position: absolute;
-  height: 100vh;
-  width: 100%;
-  overflow: hidden; 
-}
-
-
-
-.content {
-  position: relative;
-  z-index: 1;
+  overflow: hidden;
 }
 
 .overlay {
@@ -39,8 +25,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 15px;
-  z-index: 18;
-
+  z-index: 10;
 }
 
 .header {
@@ -84,17 +69,12 @@ body {
 }
 
 .url-box {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  background-color: #2c3e50;
   padding: 30px;
   border-radius: 15px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   width: 100%;
   max-width: 500px;
-  margin-top: 20px;
-  margin-bottom: 20px;
   opacity: 0;
   transform: scale(0.8) rotate(3deg);
   transition: opacity 0.5s ease, transform 0.5s ease;
@@ -188,7 +168,6 @@ body {
 .short-url {
   word-wrap: break-word;
   overflow-wrap: break-word;
-  background-color: #f0f0f0;
 }
 
 .error-message {
