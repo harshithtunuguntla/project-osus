@@ -24,13 +24,14 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px;
+  padding: 8px;
   z-index: 10;
 }
 
 .header {
   background-color: #000;
   font-family: "Poppins", sans-serif;
+  display: flex;
 }
 
 .header .brand {
@@ -38,6 +39,7 @@ body {
   font-weight: 700;
   letter-spacing: 1px;
   color: #9b59b6;
+  padding-left: 10px;
 }
 .header ul {
   display: flex;
@@ -49,14 +51,37 @@ body {
   padding: 10px 20px;
   margin-left: 10px;
   transition: all 0.3s ease-in-out;
-  background: linear-gradient(to right, #8e44ad, #9b59b6);
+  /* background: linear-gradient(to right, #8e44ad, #9b59b6); */
   color: #fff;
 }
 
-.header .btn:hover {
-  background: linear-gradient(to right, #f9e9ff, #f7e3ff);
-  color: #8644ad;
+.header .btn {
+  position: relative; /* Required for absolute positioning of the pseudo-element */
+  transition: transform 0.3s ease, background 0.3s ease; /* Transition for smooth effect */
 }
+
+.header .btn:hover {
+  color: #8644ad;
+  transform: translateY(-2px); /* Raise the button slightly */
+}
+
+/* Add a pseudo-element for the white line */
+.header .btn::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0px; /* Adjust to position the line */
+  height: 2px; /* Height of the line */
+  background-color: white; /* Color of the line */
+  opacity: 0; /* Initially invisible */
+  transition: opacity 0.3s ease; /* Smooth transition for the line */
+}
+
+.header .btn:hover::after {
+  opacity: 1; /* Show the line on hover */
+}
+
 
 .main-content {
   display: flex;
@@ -66,20 +91,42 @@ body {
   flex-grow: 1;
   position: relative;
   z-index: 10;
+  font-family: "Poppins", "Sans-serif";
 }
 
 .url-box {
-  background-color: #2c3e50;
+  background: rgba(255, 255, 255, 0.1); /* Semi-transparent white for glass effect */
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)); /* Gradient effect */
   padding: 30px;
-  border-radius: 15px;
+  border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   width: 100%;
   max-width: 500px;
-  opacity: 0;
-  transform: scale(0.8) rotate(3deg);
+  opacity: 0; /* Initial opacity for animation */
+  transform: scale(0.8) rotate(3deg); /* Initial transform for animation */
   transition: opacity 0.5s ease, transform 0.5s ease;
   animation: fadeInScale 0.5s forwards;
+  font-weight: 200  ;
+  
+  /* Glassmorphism effect */
+  backdrop-filter: blur(20px); /* Frosted glass effect */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
 }
+
+.form-label{
+  padding-bottom: 2px;
+}
+
+.formhead{
+  padding-bottom: 10px;
+}
+
+.form-control{
+  padding-bottom: 10px;
+  border-radius: 5px;
+}
+
+/* Optional: Keyframes for the fadeInScale animation */
 
 @keyframes fadeInScale {
   0% {
@@ -106,8 +153,8 @@ body {
 .url-box .btn {
   background-color: #9b59b6;
   color: #fff;
-  font-weight: bold;
-  border-radius: 30px;
+  font-weight: medium;
+  border-radius: 2px;
   padding: 10px 20px;
   width: 100%;
   transition: background-color 0.3s ease-in-out;
