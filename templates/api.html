@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project OSUS | API Docs</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="{{ url_for('static', filename='images/logo.png') }}"
+      type="image/x-icon"
+    />
+    <style>
+     /* General Styling */
+body {
+    font-family: "Inter", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #121212;
+    color: #ffffff;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    scroll-behavior: smooth;
+}
+
+/* Header */
+header {
+    background-color: #000000;
+    color: #9b59b6;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    top: 0;
+    z-index: 100;
+}
+
+header h1 {
+    text-align: center;
+    margin: 0;
+    flex-grow: 1;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Button */
+.button,
+header .btn {
+    background-color: #9b59b6;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 30px;
+    padding: 10px 20px;
+    text-decoration: none;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.button:hover,
+header .btn:hover {
+    background: linear-gradient(to right, #f9e9ff, #f7e3ff);
+    color: #8644ad;}
+
+/* Layout */
+.main-layout {
+    display: flex;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+    flex: 1;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 240px;
+    background-color: #1f1f1f;
+    border-right: 1px solid #333;
+    padding: 20px;
+    margin-right: 20px;
+    flex-shrink: 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    color: #bbbbbb;
+    max-height: calc(100vh - 80px);
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #9b59b6;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 8px 0;
+}
+
+.sidebar ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Content */
+.content {
+    flex-grow: 1;
+    background-color: #1f1f1f;
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+/* Section Container */
+.section-container {
+    margin-bottom: 20px;
+    padding: 20px;
+    background-color: #2c3e50;
+    border-radius: 8px;
+}
+
+.section-container h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #9b59b6;
+}
+
+/* Code Blocks */
+pre.code-block {
+    background-color: #272822;
+    padding: 15px;
+    border-radius: 6px;
+    font-family: "Courier New", monospace;
+    color: #f8f8f2;
+    font-size: 14px;
+}
+
+/* Footer */
+footer {
+    background-color: #000000;
+    color: #ffffff;
+    text-align: center;
+    padding: 10px;
+    bottom: 0;
+}
+
+footer a {
+    color: #9b59b6;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer .heart {
+    color: #9b59b6;
+}
+
+/* Table */
+.endpoint-req {
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+    border-collapse: collapse;
+}
+
+.endpoint-req td {
+    padding: 8px;
+    border: 1px solid #555;
+}
+
+.endpoint-req .code-inline {
+    color: lightgreen;
+    display: inline;
+}
+
+/* Dropdown Styling */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: -10px;
+    background-color: #333;
+    border: 1px solid #555;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.7s ease;
+    width: 200px;
+}
+
+.dropdown-content a {
+    display: block;
+    color: #9b59b6;
+    padding: 6px 8px;
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.dropdown-content a:hover {
+    background-color: #444;
+    color: #fff;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    opacity: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+        box-shadow: none;
+    }
+
+    .sidebar ul li a {
+        padding: 6px;
+        font-size: 0.85rem;
+    }
+
+    .section-container {
+        padding: 15px;
+        font-size: 0.9rem;
+    }
+
+    .content {
+        padding: 20px;
+        max-height: none;
+    }
+}
+.endpoint-title {
+    font-size: 1.5em; /* Adjust size as needed */
+    font-weight: bold; /* Bold text */
+    display: inline; /* Ensures it stays inline */
+}
+.endpoints-list {
+    width: 100%; /* Make the table full width */
+    border-collapse: collapse; /* Remove gaps between table cells */
+    background-color: #263443; /* Set the background color */
+    color: white; /* Text color */
+    margin-top: 20px; /* Add some space above the table */
+}
+
+.endpoints-list th, .endpoints-list td {
+    padding: 15px; /* Add padding inside cells */
+    text-align: left; /* Align text to the left */
+}
+
+.endpoints-list th {
+    background-color: #344b63; /* Slightly lighter background for header */
+    font-size: 1.2em; /* Increase font size for header */
+    border-bottom: 2px solid #4e6875; /* Add a bottom border to the header */
+}
+
+.endpoints-list tr:nth-child(even) {
+    background-color: #2d404d; /* Alternate row color for better readability */
+}
+
+.endpoints-list tr:hover {
+    background-color: #3b4b58; /* Highlight row on hover */
+}
+
+
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <h1>Project OSUS - Open Source URL Shortener</h1>
+      <a href="/" class="btn">Use Now</a>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="main-layout">
+      <!-- Sidebar -->
+      <nav class="sidebar">
+        <h2>Getting Started</h2>
+        <ul>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#postman-collection">Postman Collection</a></li>
+            
+            <!-- Dropdown for Endpoints -->
+            <li class="dropdown">
+                <a href="#features">Endpoints</a>
+                <ul class="dropdown-content">
+                    <li><a href="#post-analytics">POST Analytics</a></li>
+                    <li><a href="#post-shorten">POST Shorten</a></li>
+                </ul>
+            </li>
+            
+        </ul>
+    
+        
+      </nav>
+
+      <!-- Content -->
+      <main class="content">
+        <!-- Overview Section -->
+        <div class="section-container" id="overview">
+          <h2>Welcome, Developers.</h2>
+          <p>
+            Welcome to <strong>Project OSUS</strong>, an open-source URL
+            shortener built using Flask, Python, and MongoDB. This project is
+            part of Hacktoberfest 2024, encouraging contributions from
+            developers and non-developers alike. The goal is to provide a
+            simple, easy-to-use URL shortening service while fostering
+            collaboration in the open-source community.
+          </p>
+        </div>
+
+       <!-- Installation Section -->
+<div class="section-container" id="postman-collection">
+    <h2>Postman Collection</h2>
+    <p>To get started with Project OSUS, use the following Postman collection to test and understand the API:</p>
+    <ul>
+        <li>
+            Visit the <a href="https://www.postman.com/navigation-observer-77695438/project-osus/collection/ne7ugfj/project-osus-open-source-url-shortener?action=share&creator=32610192" target="_blank" style="color: rgb(0, 230, 0);">
+                Project OSUS Postman Collection
+            </a> to access all API endpoints.
+        </li>
+        <li>Test the API endpoints.</li>
+        <li>Contribute to the collection by forking and making changes.</li>
+    </ul>
+    <p>Note: Forking in Postman creates a new instance of an element that you can modify without changing the original. You can fork collections, environments, and flows to make contributions even without Editor access.</p>
+</div>
+
+<div class="section-container" id="shorten-url">
+    <!-- Endpoints Section -->
+    <h2>Endpoints</h2>
+    <table class="endpoints-list">
+        <tr>
+            <th>Endpoint</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td><pre class="code-inline">/shorten</pre></td>
+            <td>Shortens a long URL by providing a custom keyword, expiration date, and time.</td>
+        </tr>
+        <tr>
+            <td><pre class="code-inline">/analytics</pre></td>
+            <td>Retrieves analytics data for shortened URLs, including click statistics and referrer information.</td>
+        </tr>
+    </table>
+             
+
+<div class="section-container" id="shorten-url">
+    <span class="endpoint-title " id="post-shorten">1) /shorten Endpoint</span>
+    <p>This endpoint allows you to shorten a long URL by providing a custom keyword, expiration date, and time.</p>
+    
+    <!-- Endpoint Details Table -->
+    <h3>Endpoint Details</h3>
+    <table class="endpoint-req">
+        <tr>
+            <td>Endpoint</td>
+            <td><pre class="code-inline">/shorten</pre></td>
+        </tr>
+        <tr>
+            <td>Method</td>
+            <td><pre class="code-inline">POST</pre></td>
+        </tr>
+        <tr>
+            <td>URL</td>
+            <td><pre class="code-inline">https://project-osus.vercel.app/shorten</pre></td>
+        </tr>
+    </table>
+
+    <!-- Request Body Details -->
+    <h3>Request Body</h3>
+    <ul>
+        <li><strong>longUrl</strong> (string): The long URL to be shortened.</li>
+        <li><strong>keyword</strong> (string, optional): Custom keyword for the short URL.</li>
+        <li><strong>expirationDate</strong> (string, optional): Date for the short URL expiration.</li>
+        <li><strong>expirationTime</strong> (string, optional): Time for the short URL expiration.</li>
+        <li><strong>expirationPeriod</strong> (string, optional): Period (AM/PM) for the expiration time.</li>
+        <li><strong>timezone</strong> (string, optional): Timezone for the expiration date and time.</li>
+    </ul>
+    
+    <!-- Sample Request -->
+    <h3>Sample Request</h3>
+    <pre class="code-block" style="color: lightgreen;">
+    {
+       "longUrl": "https://www.google.com/",
+       "keyword": "your-key-word",
+       "expirationDate": "YYYY-MM-DD",
+       "expirationTime": "HH:MM",
+       "expirationPeriod": "PM",
+       "timezone": "UTC"
+    }
+    </pre>
+    
+    <!-- Response Section -->
+    <h3>Response</h3>
+    <p>Status Code: <span class="code-inline" style="color: lightgreen;">200</span></p>
+    <p>JSON:</p>
+    <pre class="code-block" style="color: lightgreen;">
+    {
+       "shortUrl": "https://project-osus.vercel.app/your-key-word"
+    }
+    </pre>
+    <!-- Response Section: Keyword Already Exists -->
+<p>Status Code: <span class="code-inline" style="color: red;">400</span></p>
+<p>If the keyword already exists:</p>
+
+<p>JSON:</p>
+<pre class="code-block" style="color: red;">
+{
+    "error": "The keyword already exists. Please choose a different one."
+}
+</pre>
+</div>
+<div class="section-container" id="analytics-url">
+    <span class="endpoint-title "id="post-analytics">2) /analytics Endpoint</span>
+    <p>This endpoint allows you to submit analytics data.</p>
+
+    <!-- Endpoint Details Table -->
+    <h3>Endpoint Details</h3>
+    <table class="endpoint-req">
+        <tr>
+            <td>Endpoint</td>
+            <td><pre class="code-inline">/analytics</pre></td>
+        </tr>
+        <tr>
+            <td>Method</td>
+            <td><pre class="code-inline">POST</pre></td>
+        </tr>
+        <tr>
+            <td>URL</td>
+            <td><pre class="code-inline">https://project-osus.vercel.app/analytics</pre></td>
+        </tr>
+    </table>
+
+    <!-- Request Body Details -->
+    <h3>Request Body</h3>
+    <ul>
+        <li><strong>keyword</strong> (text, required): The keyword for which the analytics data is being submitted.</li>
+    </ul>
+
+    <!-- Example Request -->
+    <h3>Example Request</h3>
+    <pre class="code-block" style="color: lightgreen;">
+    {
+        "keyword": "LarryPage"
+    }
+    </pre>
+
+    <!-- Response Section: Keyword Present -->
+    <h3>Response</h3>
+    <p>Status Code: <span class="code-inline" style="color: lightgreen;">200</span></p>
+    <p>If the keyword is  present:</p>
+
+    <p>JSON:</p>
+    <pre class="code-block" style="color: lightgreen;">
+    {
+        "clicks": 0,
+        "expiration": "2050-07-05T23:59:00"
+    }
+    </pre>
+
+    <!-- 404 Not Found Section -->
+    <p>Status Code: <span class="code-inline" style="color: rgb(255, 68, 68);">404</span></p>
+    <p>If the keyword is not present:</p>
+    <pre class="code-block" style="color: lightgreen;">
+    {
+        "error": "Keyword not found."
+    }
+    </pre>
+</div>
+
+
+
+
+            
+           
+
+        </main>
+    
+      </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>© 2024 Project OSUS. All rights reserved.</p>
+      <div>
+        <a href="https://example.com" target="_blank"
+          >Open Source Developed <span class="heart">❤</span></a
+        >
+      </div>
+      <div class="footer-details">
+        <p>HacktoberFest 2024</p>
+      </div>
+    </footer>
+  </body>
+  <script>
+    // Optional JavaScript if you want to add a delay
+    window.addEventListener("DOMContentLoaded", () => {
+      const textElement = document.querySelector('.typing-text');
+      setTimeout(() => {
+        textElement.style.animationPlayState = 'running';
+      }, 500); // Adjust delay in milliseconds
+    });
+  </script>
+</html>

@@ -43,6 +43,15 @@ body {
   display: flex;
   list-style: none;
 }
+.btn {
+  display: inline-flex;
+  align-items: center;
+}
+
+.small-icon {
+  font-size: 0.75em; /* Reduce icon size */
+  margin-left: 8px;  /* Add space between text and icon */
+}
 
 .header .btn {
   border-radius: 30px;
