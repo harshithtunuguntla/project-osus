@@ -77,17 +77,21 @@ header .btn:hover {
 
 /* Sidebar */
 .sidebar {
-    width: 240px;
-    background-color: #1f1f1f;
-    border-right: 1px solid #333;
-    padding: 20px;
-    margin-right: 20px;
-    flex-shrink: 0;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
-    color: #bbbbbb;
-    max-height: calc(100vh - 80px);
-}
+        position: sticky;
+        top: 0px;
+        width: 240px;
+        background-color: #1f1f1f;
+        border-right: 1px solid #333;
+        padding: 20px;
+        margin-right: 20px;
+        flex-shrink: 0;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        border-radius: 8px;
+        color: #bbbbbb;
+        max-height: calc(
+          100vh - 80px
+        ); /* Ensure it doesn't exceed the screen height */
+      }
 
 .sidebar ul {
     list-style: none;

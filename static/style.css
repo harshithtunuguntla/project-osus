@@ -45,9 +45,12 @@ body {
   display: flex;
   list-style: none;
 }
+
 .btn {
-  display: inline-flex;
-  align-items: center;
+  margin-top: 10px;        /* Adds a 5px margin on all sides */
+  display: flex;      /* Allows centering */
+  align-items: center; /* Vertically centers content */
+  justify-content: center; /* Horizontally centers content */
 }
 
 .small-icon {
