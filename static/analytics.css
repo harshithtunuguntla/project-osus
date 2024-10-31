@@ -8,8 +8,10 @@ body {
     min-height: 100vh;
   }
   .btn {
-    display: inline-flex;
-    align-items: center;
+    margin-top: 10px;        /* Adds a 5px margin on all sides */
+    display: flex;      /* Allows centering */
+    align-items: center; /* Vertically centers content */
+    justify-content: center; /* Horizontally centers content */
   }
   
   .small-icon {
@@ -51,15 +53,29 @@ body {
     padding: 10px 20px;
     margin-left: 10px;
     transition: all 0.3s ease-in-out;
-    background: linear-gradient(to right, #8E44AD, #9B59B6);
-    color: #fff;
+  /* background: linear-gradient(to right, #8e44ad, #9b59b6); */
+  color: #fff;
   }
 
   .header .btn:hover {
-    background: linear-gradient(to right, #f9e9ff, #f7e3ff);
-    color: #8E44AD;
+    color: #8644ad;
+    transform: translateY(-2px); /* Raise the button slightly */
   }
-
+  /* Add a pseudo-element for the white line */
+.header .btn::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0px; /* Adjust to position the line */
+  height: 2px; /* Height of the line */
+  background-color: white; /* Color of the line */
+  opacity: 0; /* Initially invisible */
+  transition: opacity 0.3s ease; /* Smooth transition for the line */
+}
+.header .btn:hover::after {
+  opacity: 1; /* Show the line on hover */
+}
   .header ul {
     display: flex;
     list-style: none;
@@ -76,19 +92,27 @@ body {
     flex-grow: 1;
     position: relative;
     z-index: 10;
+    font-family: "Poppins", "Sans-serif";
+
   }
 
   .url-box {
-    background-color: #2C3E50;
+    background: rgba(255, 255, 255, 0.1); /* Semi-transparent white for glass effect */
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)); /* Gradient effect */
     padding: 30px;
-    border-radius: 15px;
+    border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     width: 100%;
     max-width: 500px;
-    opacity: 0;
-    transform: scale(0.8) rotate(3deg);
+    opacity: 0; /* Initial opacity for animation */
+    transform: scale(0.8) rotate(3deg); /* Initial transform for animation */
     transition: opacity 0.5s ease, transform 0.5s ease;
     animation: fadeInScale 0.5s forwards;
+    font-weight: 100  ;
+    
+    /* Glassmorphism effect */
+    backdrop-filter: blur(20px); /* Frosted glass effect */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
   }
 
   @keyframes fadeInScale {
