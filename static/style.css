@@ -45,9 +45,12 @@ body {
   display: flex;
   list-style: none;
 }
+
 .btn {
-  display: inline-flex;
-  align-items: center;
+  margin-top: 10px;        /* Adds a 5px margin on all sides */
+  display: flex;      /* Allows centering */
+  align-items: center; /* Vertically centers content */
+  justify-content: center; /* Horizontally centers content */
 }
 
 .small-icon {
@@ -65,8 +68,9 @@ body {
 }
 
 .header .btn {
+
   position: relative; /* Required for absolute positioning of the pseudo-element */
-  transition: transform 0.3s ease, background 0.3s ease; /* Transition for smooth effect */
+  transition: transform 0.3s ease; /* Transition for smooth effect */
 }
 
 .header .btn:hover {
@@ -88,7 +92,7 @@ body {
 }
 
 .header .btn:hover::after {
-  opacity: 1; /* Show the line on hover */
+  opacity: 5; /* Show the line on hover */
 }
 
 
