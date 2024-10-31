@@ -31,7 +31,7 @@
     </label>
     <ul>
       <li>
-        <a href="/" class="btn home" style="color: #8644ad;">Home</a>
+        <a href="/" class="btn" style="color: #8644ad;">Home</a>
       
       
       </li>
@@ -102,16 +102,22 @@
     document.getElementById('longUrl').focus();
   };
   </script>
-
-  <!-- Footer Section -->
-  <footer class="footer">
-    <section>
-        <a href="https://example.com" target="_blank">Open Source Developed<span class="heart">❤</span></a>
-    </section>
-    <div class="footer-details">
-        <p><strong>HacktoberFest 2024</strong></p>
-    </div>
+<!-- Footer Section -->
+<footer class="footer">
+  <section>
+    <p><i class="fa-solid fa-link"></i> Links: <span id="linksCount">{{ links_count }}</span></p>
+    <p><i class="fa-solid fa-users"></i> Interactions: <span id="visitorsCount">{{ visitor_count }}</span></p>
+  </section>
+  <div class="footer-details"class="heart">
+    <p>
+      <span class="highlight">Open Source Developed</span> 
+      <span class="gap">x</span>
+      <span>HacktoberFest 2024</span>
+      <span class="heart">❤</span>
+    </p>
+  </div>
 </footer>
+
 
 
   <script>
@@ -189,6 +195,10 @@
             <span style="color: white;">Shortened URL:</span> <a href="${data.shortUrl}" class="short-url" target="_blank">${data.shortUrl}</a>
             <i class="fas fa-copy copy-icon" title="Copy to clipboard"></i>
         `;
+
+        // Update the links and visitors counts
+        document.getElementById('linksCount').innerText = data.linksGenerated; // Update links count
+        document.getElementById('visitorsCount').innerText = data.visitorsCount; // Update visitors count
 
         // Add click event for the copy icon
         const copyIcon = document.querySelector('.copy-icon');

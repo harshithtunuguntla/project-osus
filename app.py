@@ -12,13 +12,17 @@ import string
 
 load_dotenv()
 app = Flask(__name__)
-#,int(os.getenv('MONGO_PORT'))
 # MongoDB Setup
-client = MongoClient(os.getenv('MONGO_PATH'))
+client = MongoClient(os.getenv('MONGO_PATH'),int(os.getenv('MONGO_PORT')))
 db = client.ShortUrlDatabase
 url_collection = db.URLData
+web_traffic_collection = db.WebTraffic
 
 # Helper Functions
+# Function to increment the click count for a given keyword in the web_traffic_collection
+def update_click_count(keyword):
+    """Increment the click count for the given keyword."""
+    web_traffic_collection.update_one({'keyword': keyword}, {'$inc': {'clicks': 1}})
 def generate_random_string(length=5):
     """Generate a random string of specified length with both uppercase and lowercase letters."""
     return ''.join(random.choices(string.ascii_letters, k=length))
@@ -40,10 +44,44 @@ def insert_url_data(keyword, longUrl, expiration_datetime_utc ):
 def get_long_url_by_keyword(keyword):
     """Retrieve the long URL associated with the given keyword."""
     return url_collection.find_one({'keyword': keyword})
+from pymongo import MongoClient
 
-def update_click_count(keyword):
-    """Increment the click count for the given keyword."""
-    url_collection.update_one({'keyword': keyword}, {'$inc': {'clicks': 1}})
+# Connect to the MongoDB client
+client = MongoClient("mongodb+srv://pasamyagnesh:MK0GNk0aBx2VMYew@projectosus.b7bs5.mongodb.net/?retryWrites=true&w=majority&appName=ProjectOSUS")
+
+# Access the ShortUrlDatabase and WebTraffic collection
+db = client.ShortUrlDatabase
+web_traffic_collection = db.WebTraffic
+
+# Function to increment the visitor count in the WebTraffic collection
+def increment_visitor_count():
+    """Increment the visitor count."""
+    web_traffic_collection.update_one(
+        {},  # Update all documents (or you can use a specific filter)
+        {'$inc': {'visitors': 1}}  # Increment the visitors field
+    )
+
+# Function to retrieve the visitor count
+def get_visitor_count():
+    """Retrieve the visitor count from the WebTraffic collection."""
+    result = web_traffic_collection.find_one({}, {'visitors': 1})  # Retrieve only the visitors field
+    return result['visitors'] if result and 'visitors' in result else 0
+
+# Function to increment the 'links_Generated' count
+def update_links_generated():
+    """Increment the links generated count."""
+    web_traffic_collection.update_one(
+        {},  # Update all documents (or you can use a specific filter)
+        {'$inc': {'links_Generated': 1}}  # Increment the links_Generated field
+    )
+
+# Function to get the current 'links_Generated' count
+def get_links_count():
+    """Get the current links generated count."""
+    result = web_traffic_collection.find_one({}, {'links_Generated': 1})  # Retrieve only the links_Generated field
+    return result['links_Generated'] if result and 'links_Generated' in result else 0
+
+
 from datetime import datetime
 
 def get_expiration_datetime(expiration_date, expiration_time, expiration_period=None, user_timezone=None):
@@ -85,19 +123,27 @@ def get_expiration_datetime(expiration_date, expiration_time, expiration_period=
             return {'error': 'Invalid expiration time format. Use HH:MM AM/PM for 12-hour or HH:MM for 24-hour format.'}, 400
     return None  # Return None if no expiration is set
 
-# Routes
 @app.route('/')
 def home():
-    """Render the index page."""
-    return render_template('index.html')
+    """Render the index page with visitor count and links count."""
+    increment_visitor_count()  # Increment the visitor count each time the home page is accessed
+    
+    visitor_count = get_visitor_count()  # Get the current visitor count
+    links_count = get_links_count()  # Get the count of links generated
+
+    return render_template('index.html', visitor_count=visitor_count, links_count=links_count)  # Pass both counts to the template
 
 @app.route('/documentation')
 def documentation():
     """Render the documentation page."""
+    increment_visitor_count()  # Increment the Interations count
+
     return render_template('documentation.html')
 @app.route('/api-docs')
 def api_documentation():
     """Render the api docs page."""
+    increment_visitor_count()  # Increment the Interations count
+
     return render_template('api.html')
 
 @app.route('/getURL')
@@ -137,10 +183,29 @@ def shortenAPI():
       
         # Check if the keyword is already present in the database
         if check_keyword_existence(keyword):
+            increment_visitor_count()  # Increment the Interations count
+    
             return jsonify({'error': 'The keyword already exists. Please choose a different one.'}), 400
         insert_url_data(keyword, longUrl,expiration_datetime_utc)
         short_url = f'{request.host_url}{keyword}'
-        return jsonify({'shortUrl': short_url}), 200
+        # Update the links generated count
+        update_links_generated()
+        increment_visitor_count()  # Increment the Interations count
+    
+
+        # Get the updated counts
+        current_links_generated = get_links_count()  # Assume this function retrieves the count
+        current_visitors_count = get_visitor_count()  # Function to get the current visitors count
+
+        # Create the short URL
+        short_url = f'{request.host_url}{keyword}'
+
+        # Return the response with short URL, keyword, and counts
+        return jsonify({
+            'shortUrl': short_url,
+            'linksGenerated': current_links_generated,
+            'visitorsCount': current_visitors_count  # Include visitors count
+        }), 200
 
 @app.route('/analytics', methods=['GET', 'POST'])
 def analyticsAPI():
@@ -152,6 +217,8 @@ def analyticsAPI():
 
     if request.method == 'GET':
         print('Analytics page requested.')
+        increment_visitor_count()  # Increment the Interations count
+
         return render_template('analytics.html')
 
     if request.method == 'POST':
@@ -173,9 +240,13 @@ def analyticsAPI():
                 response_data['expiration'] = remaining_time
             
             print(f'Keyword: {keyword}, Clicks Count: {clicks_count}, Expiration: {response_data.get("expiration")}')
+            increment_visitor_count()  # Increment the Interations count
+
             return jsonify(response_data), 200
         else:
             print('Keyword not found in DB')
+            increment_visitor_count()  # Increment the Interations count
+    
             return jsonify({'error': 'Keyword not found.'}), 404
 
 def handle_expiration(expiration):
@@ -195,6 +266,8 @@ def redirect_to_long_url(keyword):
     url_data = get_long_url_by_keyword(keyword)
 
     if not url_data:
+        increment_visitor_count()  # Increment the Interations count
+
         return render_template('errorpage.html', 
                                title="Oops! Page Not Found", 
                                message="404 - The URL you are trying to reach doesn't exist!")
@@ -205,6 +278,8 @@ def redirect_to_long_url(keyword):
     expiration_time = url_data.get('expiration')  # Use .get() to avoid KeyError
     if expiration_time is None:
         update_click_count(keyword)
+        increment_visitor_count()  # Increment the Interations count
+    
         return redirect(url_data['url'], code=302)
 
     # If expiration_time is present, perform the comparison
@@ -212,11 +287,15 @@ def redirect_to_long_url(keyword):
     unix_expiration_time = expiration_time.timestamp()
 
     if unix_current_time > unix_expiration_time:
+        increment_visitor_count()  # Increment the Interations count
+    
         return render_template('errorpage.html', 
                                title="Oops! URL has expired", 
                                message="404 - The URL you are trying to reach has expired!")
 
     update_click_count(keyword)
+    increment_visitor_count()  # Increment the Interations count
+
     return redirect(url_data['url'], code=302)
 
 if __name__ == '__main__':

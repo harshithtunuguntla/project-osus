@@ -139,6 +139,46 @@ body {
   border-radius: 5px;
 }
 
+section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px; /* Adds a 30px margin between items */
+}
+
+section p {
+  margin: 0; /* Remove default margin for consistent spacing */
+  font-size: 1rem; /* Adjust font size as needed */
+  color: #ffffff; /* Set color or adjust for theme */
+}
+
+.footer {
+  background-color: #222;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+
+
+.footer-details p {
+  margin: 5px 0;
+}
+.footer-details .highlight {
+  color: #8644ad; /* Color for "Open Source Developed" */
+}
+
+.footer-details .gap {
+  margin: 0 10px; /* Adds a gap between "Open Source Developed" and "HacktoberFest 2024" */
+}
+
+.footer-details .heart {
+  color: red;
+  margin-left: 5px;
+}
+
+
+
 /* Optional: Keyframes for the fadeInScale animation */
 
 @keyframes fadeInScale {
