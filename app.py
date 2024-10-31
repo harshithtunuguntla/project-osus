@@ -204,6 +204,7 @@ def redirect_to_long_url(keyword):
 
     expiration_time = url_data.get('expiration')  # Use .get() to avoid KeyError
     if expiration_time is None:
+        update_click_count(keyword)
         return redirect(url_data['url'], code=302)
 
     # If expiration_time is present, perform the comparison
