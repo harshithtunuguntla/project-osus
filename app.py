@@ -19,7 +19,6 @@ url_collection = db.URLData
 web_traffic_collection = db.WebTraffic
 
 # Helper Functions
-# Function to increment the click count for a given keyword in the web_traffic_collection
 def update_click_count(keyword):
     """Increment the click count for the given keyword."""
     web_traffic_collection.update_one({'keyword': keyword}, {'$inc': {'clicks': 1}})
@@ -46,12 +45,6 @@ def get_long_url_by_keyword(keyword):
     return url_collection.find_one({'keyword': keyword})
 from pymongo import MongoClient
 
-# Connect to the MongoDB client
-client = MongoClient("mongodb+srv://pasamyagnesh:MK0GNk0aBx2VMYew@projectosus.b7bs5.mongodb.net/?retryWrites=true&w=majority&appName=ProjectOSUS")
-
-# Access the ShortUrlDatabase and WebTraffic collection
-db = client.ShortUrlDatabase
-web_traffic_collection = db.WebTraffic
 
 # Function to increment the visitor count in the WebTraffic collection
 def increment_visitor_count():
