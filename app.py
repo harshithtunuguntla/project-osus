@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify, redirect
 from datetime import datetime 
 import pytz
+from pymongo import MongoClient
 
 from pytz import timezone, utc
 import os
@@ -44,11 +45,6 @@ def insert_url_data(keyword, longUrl, expiration_datetime_utc ):
 def get_long_url_by_keyword(keyword):
     """Retrieve the long URL associated with the given keyword."""
     return url_collection.find_one({'keyword': keyword})
-from pymongo import MongoClient
-
-# Connect to the MongoDB client
-client = MongoClient("mongodb+srv://pasamyagnesh:MK0GNk0aBx2VMYew@projectosus.b7bs5.mongodb.net/?retryWrites=true&w=majority&appName=ProjectOSUS")
-
 # Access the ShortUrlDatabase and WebTraffic collection
 db = client.ShortUrlDatabase
 web_traffic_collection = db.WebTraffic
